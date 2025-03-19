@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원가입</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>회원가입</h1>
+    <form th:action="@{/register}" th:object="${user}" method="post" onsubmit="return checkFormBeforeSubmit()">
+        ID: <input type="text" th:field="*{username}" required /><br>
+        비밀번호: <input type="password" th:field="*{password}" required /><br>
+        닉네임: <input type="text" th:field="*{nickname}" required /><br>
+        전화번호: <input type="text" th:field="*{phoneNumber}" required /><br>
+        이메일: <input type="email" th:field="*{email}" id="emailInput" required /><br/>
+
+        <button type="button" onclick="sendCode()">인증코드 발송</button><br/>
+        인증코드: <input type="text" id="codeInput" required /><br/>
+        <button type="button" onclick="verifyCode()">인증 확인</button>
+        <button type="submit">가입하기</button>
+    </form>
+
+    <script>
+        function sendCode() {
+            const email = document.getElementById("emailInput").value;
+            fetch("/send-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "email=" + email
+            })
+                .then(response => response.text())
+                .then(code => {
+                    alert("인증코드 발송됨: " + code);  // 테스트용 → 실제론 노출 ❌
+                });
+        }
+
+        // 인증 확인 함수
+        function verifyCode() {
+            const code = document.getElementById("codeInput").value;
+            fetch("/verify-code", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "code=" + code
+            })
+                .then(response => response.text())
+                .then(result => {
+                    if (result === "인증 성공") {
+                        alert("이메일 인증 완료");
+                    } else {
+                        alert("인증 코드가 일치하지 않습니다.");
+                    }
+                });
+        }
+
+        function checkFormBeforeSubmit() {
+            const password = document.querySelector("[name='password']").value;
+
+            if (password.length < 6) {
+                alert("비밀번호는 최소 6자리 이상이어야 합니다.")
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+</body>
+</html>
