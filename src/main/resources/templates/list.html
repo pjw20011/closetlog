@@ -23,7 +23,7 @@
   <tr th:each="board, iterStat : ${boardList}">
     <td th:text="${iterStat.count}">1</td>
     <td> <a th:href="@{/view(id=${board.id})}" th:text="${board.subject}">제목</a></td>
-    <td th:text="${board.writer}">작성자</td>
+    <td th:text="${boardNicknames[board.id]}">작성자</td>
     <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</td>
   </tr>
   </tbody>

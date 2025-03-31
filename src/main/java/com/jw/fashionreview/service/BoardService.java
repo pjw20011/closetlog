@@ -13,4 +13,10 @@ public interface BoardService {
 
     // 게시물 상세 조회
     Board findById(Long id);
+
+    // 게시물 수정
+    void update(Board board);
+
+    // 게시물 삭제
+    void delete(Long id);
 }

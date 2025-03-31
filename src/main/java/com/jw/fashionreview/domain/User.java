@@ -20,7 +20,7 @@ public class User {
     @Column(nullable = false)
     private String password; // 암호화 비밀번호
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname; // 닉네임
 
     @Column(nullable = false)
