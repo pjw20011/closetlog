@@ -1,0 +1,31 @@
+<!-- resources/templates/board/write.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+
+<h2>게시글 작성</h2>
+<form th:action="@{/write}" th:object="${board}" method="post">
+    <label for="title">제목</label>
+    <input type="text" id="title" th:field="*{subject}" required>
+
+    <label for="writer">작성자</label>
+    <input type="text" id="writer" th:field="*{writer}" required>
+
+    <label for="content">내용</label>
+    <textarea id="content" th:field="*{content}" required></textarea>
+
+    <button type="submit">작성 완료</button>
+</form>
+
+
+<br>
+<a th:href="@{/board/list}">목록으로</a>
+</body>
+</html>

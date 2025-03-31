@@ -1,0 +1,19 @@
+/* static/css/board.css */
+body {
+    font-family: 'Pretendard', sans-serif;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
