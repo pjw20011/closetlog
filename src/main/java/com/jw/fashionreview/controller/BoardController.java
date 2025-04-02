@@ -97,7 +97,7 @@ public class BoardController {
 
     // 게시글 삭제
     @PostMapping("/delete")
-    public String deleteBoard(@RequestParam Long id, Principal principal, RedirectAttributes redirectAttributes){
+    public String deleteBoard(@RequestParam Long id, Principal principal, RedirectAttributes redirectAttributes) {
         Board board = boardService.findById(id);
         String loginId = principal.getName();
 
@@ -107,7 +107,10 @@ public class BoardController {
 
         boardService.delete(id);
         redirectAttributes.addFlashAttribute("message","게시글이 삭제되었습니다.");
+        System.out.println("메시지: 게시글이 삭제되었습니다.");
         return "redirect:/list";
+
+
     }
 
 }
