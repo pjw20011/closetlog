@@ -9,6 +9,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -96,7 +97,7 @@ public class BoardController {
 
     // 게시글 삭제
     @PostMapping("/delete")
-    public String deleteBoard(@RequestParam Long id, Principal principal){
+    public String deleteBoard(@RequestParam Long id, Principal principal, RedirectAttributes redirectAttributes){
         Board board = boardService.findById(id);
         String loginId = principal.getName();
 
@@ -105,6 +106,7 @@ public class BoardController {
         }
 
         boardService.delete(id);
+        redirectAttributes.addFlashAttribute("message","게시글이 삭제되었습니다.");
         return "redirect:/list";
     }
 

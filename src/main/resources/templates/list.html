@@ -10,6 +10,10 @@
 <div th:replace="header :: header"></div>
 <h2>게시글 목록</h2>
 
+<div th:if="${message}">
+  <p style="color: green;" th:text="${message}"></p>
+</div>
+
 <table border="1" cellpadding="10">
   <thead>
   <tr>
