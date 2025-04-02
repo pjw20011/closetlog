@@ -22,7 +22,7 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 ## 🛠 기술 스택
 
 - **Backend**: Java 17, Spring Boot 3.x, Spring Security, Spring Mail
-- **Database**: MySQL → *(전환 예정: MongoDB Cloud Atlas)*
+- **Database**: MySQL
 - **Frontend**: Thymeleaf, HTML/CSS *(Tailwind CSS 적용 예정)*
 - **Build Tool**: Gradle
 - **DevOps**: GitHub, IntelliJ IDEA
@@ -47,5 +47,5 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 - 사용자 옷장 등록 및 관리 기능
 - 패션 리뷰 커뮤니티 게시판
 - 스타일 추천 알고리즘 적용 (AI 기반)
-- MongoDB 완전 전환 및 AWS 배포
+- AWS 배포
 
