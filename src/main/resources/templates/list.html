@@ -10,11 +10,6 @@
 <div th:replace="header :: header"></div>
 <h2>게시글 목록</h2>
 
-<div th:if="${message}">
-  <p th:text="${message}" style="color: red;"></p>
-</div>
-
-
 <table border="1" cellpadding="10">
   <thead>
   <tr>
@@ -36,5 +31,12 @@
 
 <br>
 <a th:href="@{/write}">글쓰기</a>
+
+<script th:inline="javascript">
+  let msg = [[${message}]];
+  if (msg) {
+    alert(msg);
+  }
+</script>
 </body>
 </html>

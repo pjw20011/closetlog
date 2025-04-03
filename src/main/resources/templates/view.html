@@ -23,8 +23,24 @@
         <button type="submit" id="saveBtn" name="action" value="update" style="display:none;">저장</button>
         <button type="submit" name="action" value="delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
     </div>
-
     <a th:href="@{/list}">목록으로</a>
+</form>
+
+<hr>
+<h3>댓글</h3>
+
+<!-- 댓글 목록 -->
+<div th:each="cmt : ${comments}">
+    <p><strong th:text="${cmt.writer}">작성자</strong>: <span th:text="${cmt.content}">내용</span></p>
+    <p><small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</small></p>
+    <hr>
+</div>
+
+<!-- 댓글 작성 폼 -->
+<form th:action="@{/comment}" method="post">
+    <input type="hidden" name="board.id" th:value="${board.id}" />
+    <textarea name="content" placeholder="댓글을 입력하세요" required></textarea><br>
+    <button type="submit">댓글 작성</button>
 </form>
 
 <script>

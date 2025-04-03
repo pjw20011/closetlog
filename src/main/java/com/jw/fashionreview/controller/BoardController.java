@@ -1,8 +1,10 @@
 package com.jw.fashionreview.controller;
 
 import com.jw.fashionreview.domain.Board;
+import com.jw.fashionreview.domain.Comment;
 import com.jw.fashionreview.domain.User;
 import com.jw.fashionreview.service.BoardService;
+import com.jw.fashionreview.service.CommentService;
 import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
@@ -25,6 +27,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final UserService userService;
+    private final CommentService commentService;
 
     // 게시글 작성 폼 이동
     @GetMapping("/write")
@@ -34,11 +37,12 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public String saveBoard(@ModelAttribute Board board, Principal principal){
+    public String saveBoard(@ModelAttribute Board board, Principal principal, RedirectAttributes redirectAttributes) {
         // 로그인한 사용자 ID 저장
         String username = principal.getName(); // ex: 'pjw20011'
         board.setWriter(username); // 저장은 ID 기준
         boardService.save(board);
+        redirectAttributes.addFlashAttribute("message", "게시글이 등록되었습니다.");
         return "redirect:/list";
     }
 
@@ -65,15 +69,20 @@ public class BoardController {
     @GetMapping("/view")
     public String viewBoard(@RequestParam("id") Long id, Model model) {
         Board board = boardService.findById(id);
+        List<Comment> comments = commentService.findByBoardId(id);
+
         model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
+        model.addAttribute("Comment", new Comment()); // 댓글 작성 폼을 위한 객체
         return "view"; // 여기서 "view"는 view.html을 의미
     }
 
-    // 게시글 수정
+    // 게시글 수정 및 삭제
     @PostMapping("/view")
     public String updateOrDelete(@ModelAttribute Board board,
                                  @RequestParam String action,
-                                 Principal principal) {
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
 
         // DB에서 기존 게시글 조회
         Board originalBoard = boardService.findById(board.getId());
@@ -85,32 +94,26 @@ public class BoardController {
 
         if ("delete".equals(action)) {
             boardService.delete(board.getId());
+            redirectAttributes.addFlashAttribute("message", "게시글이 삭제되었습니다.");
         } else if ("update".equals(action)) {
             originalBoard.setSubject(board.getSubject());
             originalBoard.setContent(board.getContent());
             boardService.save(originalBoard);
+            redirectAttributes.addFlashAttribute("message", "게시글이 수정되었습니다.");
         }
 
         return "redirect:/list";
     }
 
-
-    // 게시글 삭제
-    @PostMapping("/delete")
-    public String deleteBoard(@RequestParam Long id, Principal principal, RedirectAttributes redirectAttributes) {
-        Board board = boardService.findById(id);
-        String loginId = principal.getName();
-
-        if (!board.getWriter().equals(loginId)) {
-            throw new IllegalArgumentException("삭제 권한이 없습니다.");
-        }
-
-        boardService.delete(id);
-        redirectAttributes.addFlashAttribute("message","게시글이 삭제되었습니다.");
-        System.out.println("메시지: 게시글이 삭제되었습니다.");
-        return "redirect:/list";
+    @PostMapping("/comment")
+    public String saveComment(@ModelAttribute Comment comment, Principal principal) {
+        comment.setWriter(principal.getName());
+        commentService.save(comment);
 
 
+
+        return "redirect:/view?id=" + comment.getBoard().getId();
     }
+
 
 }
