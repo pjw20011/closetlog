@@ -29,19 +29,40 @@
 <hr>
 <h3>댓글</h3>
 
+<form th:action="@{/comment}" method="post">
+    <input type="hidden" name="board.id" th:value="${board.id}" />
+    <input type="hidden" name="writer" th:value="${#authentication.name}" />
+
+    <textarea name="content" rows="3" cols="50"></textarea><br>
+    <button type="submit">댓글 작성</button>
+</form>
+
 <!-- 댓글 목록 -->
 <div th:each="cmt : ${comments}">
-    <p><strong th:text="${cmt.writer}">작성자</strong>: <span th:text="${cmt.content}">내용</span></p>
-    <p><small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</small></p>
+    <!-- 댓글 내용 출력 -->
+    <div th:if="${#authentication.name != cmt.writer}">
+        <p><strong th:text="${cmt.writer}"></strong>: <span th:text="${cmt.content}"></span></p>
+        <p><small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
+    </div>
+
+    <!-- 본인 댓글일 경우 수정 폼으로 보여주기 -->
+    <div th:if="${#authentication.name == cmt.writer}">
+        <form th:action="@{/comment/action}" method="post">
+            <input type="hidden" name="id" th:value="${cmt.id}" />
+            <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
+
+            <textarea name="content" th:text="${cmt.content}"></textarea><br>
+
+            <button type="submit" name="action" value="update">수정</button>
+            <button type="submit" name="action" value="delete"
+                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+        </form>
+    </div>
     <hr>
 </div>
 
-<!-- 댓글 작성 폼 -->
-<form th:action="@{/comment}" method="post">
-    <input type="hidden" name="board.id" th:value="${board.id}" />
-    <textarea name="content" placeholder="댓글을 입력하세요" required></textarea><br>
-    <button type="submit">댓글 작성</button>
-</form>
+
+
 
 <script>
     function enableEdit() {
@@ -51,6 +72,7 @@
         document.getElementById('saveBtn').style.display = 'inline';
     }
 </script>
+
 
 </body>
 </html>

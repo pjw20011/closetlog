@@ -25,5 +25,22 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findByBoardId(boardId);
     }
 
+    @Override
+    public void update(Comment comment) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+        commentRepository.deleteById(id);
+    }
+
+    @Override
+    public Comment findById(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("댓글 없음"));
+    }
+
+
 
 }
