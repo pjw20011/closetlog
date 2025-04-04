@@ -4,6 +4,8 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 회원가입, 이메일 인증, 로그인 보안은 Spring Security 기반으로 구현되어 있으며,  
 추후 사용자 패션 데이터를 활용한 스타일 추천 및 리뷰 기반 커뮤니티 기능이 추가될 예정입니다.
 
+👉 나만의 옷장을 관리하고, 일상 코디를 기록하며 스타일을 정리하고 싶은 사용자에게 유용한 서비스입니다.
+
 ---
 
 ## 📌 주요 기능
@@ -38,7 +40,7 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 /domain → User, Board, Comment 등 도메인 객체 
 /repository → DB 인터페이스 (현재 MySQL) 
 /service → 사용자 및 게시판/댓글 서비스 로직 
-/resources/templates → HTML 템플릿 (login, register, list, view, write 등) 등)
+/resources/templates → HTML 템플릿 (login, register, list, view, write 등) 
 ```
 
 ---
