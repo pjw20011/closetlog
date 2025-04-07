@@ -41,6 +41,17 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("댓글 없음"));
     }
 
+    @Override
+    public void saveReply(Comment reply, Long parentId, String writer) {
+       reply.setWriter(writer);
+
+       Comment parent = commentRepository.findById(parentId)
+               .orElseThrow(() -> new IllegalArgumentException("부모 댓글을 찾을 수 없습니다"));
+         reply.setParent(parent);
+         reply.setBoard(parent.getBoard());
+         commentRepository.save(reply);
+    }
+
 
 
 }

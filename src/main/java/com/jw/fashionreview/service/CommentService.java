@@ -12,4 +12,7 @@ public interface CommentService {
     void delete(Long id);
 
     Comment findById(Long id);
+
+    // 대댓글 저장
+    void saveReply(Comment reply, Long parentId, String writer);
 }

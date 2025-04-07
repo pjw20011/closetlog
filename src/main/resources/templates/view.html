@@ -45,6 +45,7 @@
         <p><small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
     </div>
 
+
     <!-- 본인 댓글일 경우 수정 폼으로 보여주기 -->
     <div th:if="${#authentication.name == cmt.writer}">
         <form th:action="@{/comment/action}" method="post">
@@ -58,11 +59,36 @@
                     onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
         </form>
     </div>
-    <hr>
+
+    <!-- 대댓글 작성 폼 -->
+    <form th:action="@{/comment/reply}" method="post" style="margin-left: 30px;">
+        <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
+        <input type="hidden" name="parentId" th:value="${cmt.id}" />
+        <textarea name="content" rows="2" cols="40" placeholder="대댓글 작성..."></textarea><br>
+        <button type="submit">답글 달기</button>
+    </form>
+
+    <!-- 대댓글 목록 -->
+    <div th:each="reply : ${cmt.replies}" style="margin-left: 40px;">
+        <p><strong th:text="${reply.writer}"></strong>: <span th:text="${reply.content}"></span></p>
+        <p><small th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
+        <!-- ✅ 대댓글 작성자 본인만 수정/삭제 -->
+        <div th:if="${#authentication.name == reply.writer}">
+            <form th:action="@{/comment/action}" method="post" style="margin-left: 10px;">
+                <input type="hidden" name="id" th:value="${reply.id}" />
+                <input type="hidden" name="board.id" th:value="${reply.board.id}" />
+
+                <textarea name="content" th:text="${reply.content}"></textarea><br>
+
+                <button type="submit" name="action" value="update">수정</button>
+                <button type="submit" name="action" value="delete"
+                        onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+            </form>
+        </div>
+    </div>
+
 </div>
-
-
-
+    <hr>
 
 <script>
     function enableEdit() {
