@@ -22,4 +22,6 @@ public class Board {
     private String writer; //작성자
 
     private LocalDateTime createdDate = LocalDateTime.now(); // 작성일
+
+    private Long viewCount; // 조회수
 }

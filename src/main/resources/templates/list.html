@@ -9,28 +9,47 @@
 <body>
 <div th:replace="header :: header"></div>
 <h2>게시글 목록</h2>
+<div class="board-search">
+  <select>
+    <option>전체</option>
+    <option>제목</option>
+    <option>작성자</option>
+  </select>
+  <input type="text" placeholder="검색어를 입력해주세요">
+  <button>검색</button>
+</div>
 
-<table border="1" cellpadding="10">
+<table class="board-table">
   <thead>
   <tr>
     <th>번호</th>
     <th>제목</th>
     <th>작성자</th>
     <th>작성일</th>
+    <th>조회</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="board, iterStat : ${boardList}">
-    <td th:text="${iterStat.count}">1</td>
-    <td> <a th:href="@{/view(id=${board.id})}" th:text="${board.subject}">제목</a></td>
-    <td th:text="${boardNicknames[board.id]}">작성자</td>
-    <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}">작성일</td>
+  <tr th:each="board, iter : ${boardList}">
+    <td th:text="${board.id}"></td>
+    <td><a th:href="@{/view(id=${board.id})}" th:text="${board.subject}"></a></td>
+    <td th:text="${boardNicknames[board.id]}"></td>
+    <td th:text="${#temporals.format(board.createdDate, 'yyyy.MM.dd')}"></td>
+    <td th:text="${board.viewCount}">0</td>
   </tr>
   </tbody>
 </table>
 
-<br>
-<a th:href="@{/write}">글쓰기</a>
+<div class="pagination">
+  <!-- 페이징은 th:each로 렌더링 -->
+  <a class="page active">1</a>
+  <a class="page">2</a>
+  <a class="page">3</a>
+</div>
+
+<div class="write-btn-box">
+  <a th:href="@{/write}" class="write-btn">글쓰기</a>
+</div>
 
 <script th:inline="javascript">
   let msg = [[${message}]];
