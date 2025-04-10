@@ -8,16 +8,15 @@
 </head>
 <body>
 <div th:replace="header :: header"></div>
-<h2>게시글 목록</h2>
-<div class="board-search">
-  <select>
-    <option>전체</option>
-    <option>제목</option>
-    <option>작성자</option>
+<form th:action="@{/list}" method="get" class="board-search">
+  <select name="type">
+    <option value="all" th:selected="${type == 'all'}">전체</option>
+    <option value="subject" th:selected="${type == 'subject'}">제목</option>
+    <option value="writer" th:selected="${type == 'writer'}">작성자</option>
   </select>
-  <input type="text" placeholder="검색어를 입력해주세요">
-  <button>검색</button>
-</div>
+  <input type="text" name="keyword" th:value="${keyword}" placeholder="검색어를 입력해주세요">
+  <button type="submit">검색</button>
+</form>
 
 <table class="board-table">
   <thead>
@@ -31,21 +30,23 @@
   </thead>
   <tbody>
   <tr th:each="board, iter : ${boardList}">
-    <td th:text="${board.id}"></td>
+    <td th:text="${iter.count}"></td>
     <td><a th:href="@{/view(id=${board.id})}" th:text="${board.subject}"></a></td>
     <td th:text="${boardNicknames[board.id]}"></td>
     <td th:text="${#temporals.format(board.createdDate, 'yyyy.MM.dd')}"></td>
-    <td th:text="${board.viewCount}">0</td>
+    <td th:text="${board.viewCount != null ? board.viewCount : 0}">0</td>
   </tr>
   </tbody>
 </table>
 
-<div class="pagination">
-  <!-- 페이징은 th:each로 렌더링 -->
-  <a class="page active">1</a>
-  <a class="page">2</a>
-  <a class="page">3</a>
+<div class="pagination" th:if="${boardPage.totalPages > 1}">
+  <a th:each="i : ${#numbers.sequence(1, boardPage.totalPages)}"
+     th:href="@{/list(page=${i - 1})}"
+     th:text="${i}"
+     th:classappend="${i == boardPage.number + 1} ? ' active' : ''"
+     class="page">1</a>
 </div>
+
 
 <div class="write-btn-box">
   <a th:href="@{/write}" class="write-btn">글쓰기</a>

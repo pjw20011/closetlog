@@ -7,19 +7,22 @@ import com.jw.fashionreview.service.BoardService;
 import com.jw.fashionreview.service.CommentService;
 import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,9 +52,20 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/list")
-    public String boardList(Model model){
+    public String boardList(Model model, @PageableDefault(size = 10) Pageable pageable,
+                            @RequestParam(value = "type", defaultValue = "all") String type,
+                            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+
+        Page<Board> boardPage;
         List<Board> boards = boardService.findAll();
+
+        if (keyword != null && !keyword.isEmpty()) {
+            boardPage = boardService.search(type, keyword, pageable);
+        } else {
+            boardPage = boardService.findAll(pageable);
+        }
         Map<Long, String> boardNicknames = new HashMap<>();
+
 
         for (Board board : boards) {
             userService.findByUsername(board.getWriter()).ifPresent(user ->
@@ -59,8 +73,11 @@ public class BoardController {
             );
         }
 
-        model.addAttribute("boardList", boards);
+        model.addAttribute("boardList", boardPage);
+        model.addAttribute("boardPage", boardPage);
         model.addAttribute("boardNicknames", boardNicknames);
+        model.addAttribute("type", type);
+        model.addAttribute("keyword", keyword);
         return "list";
     }
 

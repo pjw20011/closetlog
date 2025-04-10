@@ -4,6 +4,8 @@ import com.jw.fashionreview.domain.Board;
 import com.jw.fashionreview.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +47,21 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Board> findAll(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Board> search(String type, String keyword, Pageable pageable) {
+        if (type.equals("subject")) {
+            return boardRepository.findBySubjectContaining(keyword, pageable);
+        } else if (type.equals("writer")) {
+            return boardRepository.findByWriterContaining(keyword, pageable);
+        } else {
+            return boardRepository.findAll(pageable); // type == all
+        }
+    }
 
 
 }

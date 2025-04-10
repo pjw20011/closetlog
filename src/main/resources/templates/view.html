@@ -4,91 +4,93 @@
     <meta charset="UTF-8">
     <title>게시글 상세보기</title>
     <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/view.css">
 </head>
 <body>
 <div th:replace="header :: header"></div>
 
-<h2>게시글 상세보기</h2>
+<main class="post-view">
+    <section class="post-content">
+        <form th:action="@{/view}" method="post">
+            <input type="hidden" name="id" th:value="${board.id}" />
 
-<form th:action="@{/view}" method="post">
-    <input type="hidden" name="id" th:value="${board.id}" />
+            <h2><input type="text" id="subject" name="subject" th:value="${board.subject}" readonly /></h2>
+            <p class="post-meta">
+                작성자: <span th:text="${board.writer}"></span> |
+                작성일: <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </p>
+            <div class="post-body">
+                <textarea id="content" name="content" rows="6" readonly
+                          th:text="${board.content}"></textarea>
+            </div>
 
-    제목: <input type="text" id="subject" name="subject" th:value="${board.subject}" readonly /><br><br>
-    내용: <textarea id="content" name="content" rows="5" cols="50" readonly th:text="${board.content}"></textarea><br><br>
-    작성자: <span th:text="${board.writer}"></span><br><br>
-    작성일: <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span><br><br>
-
-    <div th:if="${#authentication.name == board.writer}">
-        <button type="button" id="editBtn" onclick="enableEdit()">수정</button>
-        <button type="submit" id="saveBtn" name="action" value="update" style="display:none;">저장</button>
-        <button type="submit" name="action" value="delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-    </div>
-    <a th:href="@{/list}">목록으로</a>
-</form>
-
-<hr>
-<h3>댓글</h3>
-
-<form th:action="@{/comment}" method="post">
-    <input type="hidden" name="board.id" th:value="${board.id}" />
-    <input type="hidden" name="writer" th:value="${#authentication.name}" />
-
-    <textarea name="content" rows="3" cols="50"></textarea><br>
-    <button type="submit">댓글 작성</button>
-</form>
-
-<!-- 댓글 목록 -->
-<div th:each="cmt : ${comments}">
-    <!-- 댓글 내용 출력 -->
-    <div th:if="${#authentication.name != cmt.writer}">
-        <p><strong th:text="${cmt.writer}"></strong>: <span th:text="${cmt.content}"></span></p>
-        <p><small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
-    </div>
-
-
-    <!-- 본인 댓글일 경우 수정 폼으로 보여주기 -->
-    <div th:if="${#authentication.name == cmt.writer}">
-        <form th:action="@{/comment/action}" method="post">
-            <input type="hidden" name="id" th:value="${cmt.id}" />
-            <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
-
-            <textarea name="content" th:text="${cmt.content}"></textarea><br>
-
-            <button type="submit" name="action" value="update">수정</button>
-            <button type="submit" name="action" value="delete"
-                    onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+            <div th:if="${#authentication.name == board.writer}" class="post-actions">
+                <button type="button" id="editBtn" onclick="enableEdit()">수정</button>
+                <button type="submit" id="saveBtn" name="action" value="update" style="display:none;">저장</button>
+                <button type="submit" name="action" value="delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+            </div>
+            <a th:href="@{/list}" class="back-to-list">목록으로</a>
         </form>
-    </div>
+    </section>
 
-    <!-- 대댓글 작성 폼 -->
-    <form th:action="@{/comment/reply}" method="post" style="margin-left: 30px;">
-        <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
-        <input type="hidden" name="parentId" th:value="${cmt.id}" />
-        <textarea name="content" rows="2" cols="40" placeholder="대댓글 작성..."></textarea><br>
-        <button type="submit">답글 달기</button>
-    </form>
-
-    <!-- 대댓글 목록 -->
-    <div th:each="reply : ${cmt.replies}" style="margin-left: 40px;">
-        <p><strong th:text="${reply.writer}"></strong>: <span th:text="${reply.content}"></span></p>
-        <p><small th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
-        <!-- ✅ 대댓글 작성자 본인만 수정/삭제 -->
-        <div th:if="${#authentication.name == reply.writer}">
-            <form th:action="@{/comment/action}" method="post" style="margin-left: 10px;">
-                <input type="hidden" name="id" th:value="${reply.id}" />
-                <input type="hidden" name="board.id" th:value="${reply.board.id}" />
-
-                <textarea name="content" th:text="${reply.content}"></textarea><br>
-
-                <button type="submit" name="action" value="update">수정</button>
-                <button type="submit" name="action" value="delete"
-                        onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-            </form>
-        </div>
-    </div>
-
-</div>
     <hr>
+
+    <section class="comment-section">
+        <h3>댓글</h3>
+        <form th:action="@{/comment}" method="post" class="comment-form">
+            <input type="hidden" name="board.id" th:value="${board.id}" />
+            <input type="hidden" name="writer" th:value="${#authentication.name}" />
+            <textarea name="content" rows="3" cols="50" placeholder="댓글을 입력하세요..."></textarea><br>
+            <button type="submit">댓글 작성</button>
+        </form>
+
+        <div th:each="cmt : ${comments}" class="comment-box">
+            <div class="comment-main">
+                <div class="comment-header">
+                <p><strong th:text="${cmt.writer}"></strong>: <span th:text="${cmt.content}"></span></p>
+                <p class="comment-meta">
+                    <small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small>
+                </p>
+
+                <div th:if="${#authentication.name == cmt.writer}" class="comment-button">
+                    <form th:action="@{/comment/action}" method="post">
+                        <input type="hidden" name="id" th:value="${cmt.id}" />
+                        <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
+                        <textarea name="content" th:text="${cmt.content}"></textarea><br>
+                        <button type="submit" name="action" value="update">수정</button>
+                        <button type="submit" name="action" value="delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                    </form>
+                </div>
+            </div>
+
+                </div>
+
+            <div class="reply-form" style="margin-left: 30px;">
+                <form th:action="@{/comment/reply}" method="post">
+                    <input type="hidden" name="board.id" th:value="${cmt.board.id}" />
+                    <input type="hidden" name="parentId" th:value="${cmt.id}" />
+                    <textarea name="content" rows="2" cols="40" placeholder="대댓글 작성..."></textarea><br>
+                    <button type="submit">답글 달기</button>
+                </form>
+            </div>
+
+            <div th:each="reply : ${cmt.replies}" class="reply-box" style="margin-left: 40px;">
+                <p><strong th:text="${reply.writer}"></strong>: <span th:text="${reply.content}"></span></p>
+                <p><small th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm')}"></small></p>
+
+                <div th:if="${#authentication.name == reply.writer}" class="reply-actions">
+                    <form th:action="@{/comment/action}" method="post">
+                        <input type="hidden" name="id" th:value="${reply.id}" />
+                        <input type="hidden" name="board.id" th:value="${reply.board.id}" />
+                        <textarea name="content" th:text="${reply.content}"></textarea><br>
+                        <button type="submit" name="action" value="update">수정</button>
+                        <button type="submit" name="action" value="delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
 
 <script>
     function enableEdit() {
@@ -98,7 +100,5 @@
         document.getElementById('saveBtn').style.display = 'inline';
     }
 </script>
-
-
 </body>
 </html>
