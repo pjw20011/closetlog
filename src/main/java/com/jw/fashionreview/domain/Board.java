@@ -23,5 +23,5 @@ public class Board {
 
     private LocalDateTime createdDate = LocalDateTime.now(); // 작성일
 
-    private Long viewCount; // 조회수
+    private Long viewCount = 0L; // 조회수
 }

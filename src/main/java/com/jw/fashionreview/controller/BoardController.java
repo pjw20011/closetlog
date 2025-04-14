@@ -41,6 +41,10 @@ public class BoardController {
 
     @PostMapping("/write")
     public String saveBoard(@ModelAttribute Board board, Principal principal, RedirectAttributes redirectAttributes) {
+        if (principal == null) {
+            System.out.println("❗ principal is null");
+            throw new RuntimeException("로그인 필요");
+        }
         // 로그인한 사용자 ID 저장
         String username = principal.getName(); // ex: 'pjw20011'
         board.setWriter(username); // 저장은 ID 기준

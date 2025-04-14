@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="/css/write.css">
 </head>
 <body>
-<div th:replace="header :: header"></div>
+
+<div th:replace="~{header :: header}"></div>
 
 <h2>게시글 작성</h2>
 <form th:action="@{/write}" th:object="${board}" method="post">
     <label for="title">제목</label>
     <input type="text" id="title" th:field="*{subject}" required>
 
-    <label for="editor">내용</label>
-    <textarea id="editor" name="content" th:field="*{content}" required></textarea>
+    <label for="content">내용</label>
+    <textarea id="content" th:field="*{content}"></textarea>
 
     <button type="submit">작성 완료</button>
 </form>
@@ -23,14 +24,23 @@
 <br>
 <a th:href="@{/list}">목록으로</a>
 
-<!-- CKEditor 불러오기 -->
+<!-- CKEditor5 로드 및 이미지 업로드 설정 -->
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    ClassicEditor
-        .create(document.querySelector('#editor'))
-        .catch(error => {
-            console.error(error);
-        });
+    let editor;
+    ClassicEditor.create(document.querySelector('#content'), {
+        ckfinder: {
+            uploadUrl: '/upload'
+        }
+    }).then(newEditor => {
+        editor = newEditor;
+    }).catch(error => {
+        console.error(error);
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('#content').value = editor.getData();
+    });
 </script>
 </body>
 </html>
