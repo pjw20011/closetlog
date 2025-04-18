@@ -10,15 +10,10 @@ import java.nio.file.Paths;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${upload.path}")
-    private String uploadPath;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 예: /uploads/aaa.jpg → 실제 파일 경로: C:/project/uploads/aaa.jpg
-        String absolutePath = Paths.get(uploadPath).toUri().toString();
-
+        // 브라우저가 /uploads/ 요청하면 실제 디스크의 경로에서 파일을 찾아줌
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///" + uploadPath + "/");
+                .addResourceLocations("file:///C:/Users/kisyj/Desktop/fashionReview/fashionreview/uploads/");
     }
 }

@@ -27,33 +27,33 @@ import java.util.UUID;
 @Controller
 public class ImageUploadController {
 
-    @Value("${upload.path}")
-    private String uploadPath;
+    private String uploadPath = "C:/Users/kisyj/Desktop/fashionReview/fashionreview/uploads";
 
     @PostMapping("/upload")
     @ResponseBody
-    public Map<String, Object> upload(@RequestParam("upload") MultipartFile file) {
-        Map<String, Object> result = new HashMap<>();
+    public ResponseEntity<?> upload(@RequestParam("upload") MultipartFile file) {
         try {
-            String uuid = UUID.randomUUID().toString();
-            String originalFilename = file.getOriginalFilename();
-            String filename = uuid + "_" + originalFilename;
+            log.info("업로드 경로: {}", uploadPath);  // 경로 확인용
 
-            File folder = new File(uploadPath);
-            if (!folder.exists()) {
-                folder.mkdirs(); // ✅ uploads 폴더 없으면 생성
-            }
+            File dir = new File(uploadPath);
+            if (!dir.exists()) dir.mkdirs();
 
-            File saveFile = new File(uploadPath, filename);
-            file.transferTo(saveFile);
+            String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+            originalFileName = originalFileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+            String uniqueFileName = UUID.randomUUID() + "_" + originalFileName;
 
-            result.put("uploaded", true);
-            result.put("url", "/uploads/" + filename); // ✅ 경로 주의
+            File destination = new File(uploadPath, uniqueFileName);
+            file.transferTo(destination);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("url", "/uploads/" + uniqueFileName);  // key 변경
+            return ResponseEntity.ok(response);
+
 
         } catch (Exception e) {
             log.error("파일 업로드 실패", e);
-            result.put("uploaded", false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Cannot upload file: " + file.getOriginalFilename()));
         }
-        return result;
     }
 }
