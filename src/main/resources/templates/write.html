@@ -34,6 +34,33 @@
         }
     }).then(newEditor => {
         editor = newEditor;
+
+        // ✅ 커스텀 업로드 어댑터 등록
+        newEditor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return {
+                upload: () => {
+                    return loader.file
+                        .then(file => {
+                            const data = new FormData();
+                            data.append('upload', file);
+
+                            return fetch('/upload', {
+                                method: 'POST',
+                                body: data
+                            })
+                                .then(res => res.json())
+                                .then(res => {
+                                    if (res.url) {
+                                        return { default: res.url };
+                                    } else {
+                                        return Promise.reject(res.error || 'Upload failed');
+                                    }
+                                });
+                        });
+                }
+            }
+        };
+
     }).catch(error => {
         console.error(error);
     });
@@ -42,5 +69,6 @@
         document.querySelector('#content').value = editor.getData();
     });
 </script>
+
 </body>
 </html>

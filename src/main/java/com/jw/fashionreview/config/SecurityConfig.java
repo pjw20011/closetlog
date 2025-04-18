@@ -18,7 +18,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/upload")
+                        .disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login","/send-code","verify-code","/css/**", "/uploads/**").permitAll()
                         .anyRequest().authenticated() // 나머지는 로그인 필요

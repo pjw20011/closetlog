@@ -56,7 +56,7 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/list")
-    public String boardList(Model model, @PageableDefault(size = 10) Pageable pageable,
+    public String boardList(Model model, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC ) Pageable pageable,
                             @RequestParam(value = "type", defaultValue = "all") String type,
                             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 

@@ -28,8 +28,13 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board findById(Long id){
-        return boardRepository.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다. ID="+id));
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. ID=" + id));
+
+        board.setViewCount(board.getViewCount() + 1);
+        boardRepository.save(board);
+
+        return board;
     }
 
     @Override

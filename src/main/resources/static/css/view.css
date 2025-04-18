@@ -27,6 +27,14 @@ body {
     font-size: 1rem;
 }
 
+ .post-body img {
+     max-width: 600px;
+     height: auto;
+     display: block;
+     margin: 10px auto;
+ }
+
+
 /* 댓글 박스 */
 .comment-box {
     background-color: #fdfdfd;

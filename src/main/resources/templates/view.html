@@ -5,6 +5,7 @@
     <title>게시글 상세보기</title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/view.css">
+
 </head>
 <body>
 <div th:replace="header :: header"></div>
@@ -19,9 +20,7 @@
                 작성자: <span th:text="${board.writer}"></span> |
                 작성일: <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
             </p>
-            <div class="post-body">
-                <textarea id="content" name="content" rows="6" readonly
-                          th:text="${board.content}"></textarea>
+            <div class="post-body" th:utext="${board.content}"></div>
             </div>
 
             <div th:if="${#authentication.name == board.writer}" class="post-actions">
@@ -142,6 +141,8 @@
                 document.getElementById("text-reply-" + id).style.display = "block";
                 document.getElementById("form-reply-" + id).style.display = "none";
             }
+
+
         </script>
 
 </body>
