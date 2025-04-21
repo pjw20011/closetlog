@@ -68,5 +68,10 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
+    @Override
+    public List<Board> findByWriter(String username) {
+        return boardRepository.findByWriter(username);
+    }
+
 
 }

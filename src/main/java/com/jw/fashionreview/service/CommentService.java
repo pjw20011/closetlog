@@ -15,4 +15,8 @@ public interface CommentService {
 
     // 대댓글 저장
     void saveReply(Comment reply, Long parentId, String writer);
+
+
+    List<Comment> findByWriter(String writer);
+
 }

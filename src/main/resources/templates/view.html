@@ -46,7 +46,7 @@
         <div th:each="cmt : ${comments}" class="comment-box" th:id="'comment-' + ${cmt.id}">
             <div class="comment-main">
                 <div class="comment-header">
-                    <strong th:text="${cmt.writer}"></strong>
+                    <strong th:text="${cmt.nickname}"></strong>
                     <small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small>
 
                     <div th:if="${#authentication.name == cmt.writer}" class="comment-buttons">
@@ -86,7 +86,7 @@
             <!-- 대댓글 출력 -->
             <div th:each="reply : ${cmt.replies}" class="reply-box" style="margin-left: 40px;">
                 <div class="reply-header">
-                    <strong th:text="${reply.writer}"></strong>
+                    <strong th:text="${reply.nickname}"></strong>
                     <small th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm')}"></small>
 
                     <div th:if="${#authentication.name == reply.writer}" class="reply-buttons">

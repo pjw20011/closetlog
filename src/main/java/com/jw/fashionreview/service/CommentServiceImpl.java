@@ -52,6 +52,11 @@ public class CommentServiceImpl implements CommentService {
          commentRepository.save(reply);
     }
 
+    @Override
+    public List<Comment> findByWriter(String writer) {
+        return commentRepository.findByWriter(writer);
+    }
+
 
 
 }

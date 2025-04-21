@@ -26,4 +26,6 @@ public interface BoardService {
     // 게시물 검색
     Page<Board> search(String type, String keyword, Pageable pageable);
 
+    List<Board> findByWriter(String username);
+
 }

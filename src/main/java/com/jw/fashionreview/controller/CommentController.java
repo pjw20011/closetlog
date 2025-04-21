@@ -1,7 +1,9 @@
 package com.jw.fashionreview.controller;
 
 import com.jw.fashionreview.domain.Comment;
+import com.jw.fashionreview.domain.User;
 import com.jw.fashionreview.service.CommentService;
+import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,15 +19,18 @@ import java.security.Principal;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
 
     // 댓글 작성
     @PostMapping("/comment")
     public String saveComment(@ModelAttribute Comment comment, Principal principal) {
         comment.setWriter(principal.getName());
+
+        // 닉네임 설정
+        User user = userService.findByUsername(principal.getName()).orElseThrow();
+        comment.setNickname(user.getNickname());
+
         commentService.save(comment);
-
-
-
         return "redirect:/view?id=" + comment.getBoard().getId();
     }
 
@@ -59,6 +64,12 @@ public class CommentController {
     // 대댓글 작성
     @PostMapping("/comment/reply")
     public String createReply(@ModelAttribute Comment reply, @RequestParam Long parentId, Principal principal) {
+        reply.setWriter(principal.getName());
+
+
+        User user = userService.findByUsername(principal.getName()).orElseThrow();
+        reply.setNickname(user.getNickname());
+
         commentService.saveReply(reply, parentId, principal.getName());
         return "redirect:/view?id=" + reply.getBoard().getId();
     }

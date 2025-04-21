@@ -39,4 +39,7 @@ public class Comment {
     // 대댓글 리스트
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Comment> replies = new ArrayList<>();
+
+    private String nickname;   // ✨ 닉네임 추가
+
 }

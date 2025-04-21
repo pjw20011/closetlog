@@ -23,5 +23,9 @@ public class Board {
 
     private LocalDateTime createdDate = LocalDateTime.now(); // 작성일
 
+    @Column(name = "view")
     private Long viewCount = 0L; // 조회수
+
+    @Column
+    private String nickname;
 }
