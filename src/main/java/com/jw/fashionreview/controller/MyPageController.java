@@ -1,5 +1,6 @@
 package com.jw.fashionreview.controller;
 
+import com.jw.fashionreview.config.CustomUserDetails;
 import com.jw.fashionreview.domain.Board;
 import com.jw.fashionreview.domain.Comment;
 import com.jw.fashionreview.domain.User;
@@ -7,7 +8,10 @@ import com.jw.fashionreview.service.BoardService;
 import com.jw.fashionreview.service.CommentService;
 import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,6 +67,18 @@ public class MyPageController {
 
         userService.updateNicknameAndPassword(username, nickname, password); // 비밀번호는 선택적 변경
         redirectAttributes.addFlashAttribute("success", "회원정보가 성공적으로 변경되었습니다.");
+
+        // 👇 변경된 사용자 정보 다시 조회
+        User updatedUser = userService.findByUsername(username).orElseThrow();
+
+        // 👇 인증 객체 갱신
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails updatedUserDetails = new CustomUserDetails(updatedUser);
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails, authentication.getCredentials(), authentication.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+
         return "redirect:/mypage";
     }
 }

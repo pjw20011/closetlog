@@ -2,6 +2,8 @@ package com.jw.fashionreview.service;
 
 import com.jw.fashionreview.domain.Board;
 import com.jw.fashionreview.repository.BoardRepository;
+import com.jw.fashionreview.repository.CommentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public void save(Board board){
@@ -48,9 +51,15 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void delete(Long id) {
-        boardRepository.deleteById(id);
+    @Transactional
+    public void delete(Long boardId) {
+        // 댓글 먼저 삭제
+        commentRepository.deleteByBoardId(boardId);
+
+        // 그 다음 게시글 삭제
+        boardRepository.deleteById(boardId);
     }
+
 
     @Override
     public Page<Board> findAll(Pageable pageable) {

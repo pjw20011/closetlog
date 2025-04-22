@@ -63,22 +63,17 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/list")
-    public String boardList(Model model, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC ) Pageable pageable,
+    public String boardList(Model model, @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
                             @RequestParam(value = "type", defaultValue = "all") String type,
                             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-        Page<Board> boardPage;
-        List<Board> boards = boardService.findAll();
+        Page<Board> boardPage = (keyword != null && !keyword.isEmpty())
+                ? boardService.search(type, keyword, pageable)
+                : boardService.findAll(pageable);
 
-        if (keyword != null && !keyword.isEmpty()) {
-            boardPage = boardService.search(type, keyword, pageable);
-        } else {
-            boardPage = boardService.findAll(pageable);
-        }
+        // 🔹 닉네임 매핑
         Map<Long, String> boardNicknames = new HashMap<>();
-
-
-        for (Board board : boards) {
+        for (Board board : boardPage.getContent()) {
             userService.findByUsername(board.getWriter()).ifPresent(user ->
                     boardNicknames.put(board.getId(), user.getNickname())
             );
@@ -86,10 +81,12 @@ public class BoardController {
 
         model.addAttribute("boardList", boardPage);
         model.addAttribute("boardPage", boardPage);
+        model.addAttribute("boardNicknames", boardNicknames);
         model.addAttribute("type", type);
         model.addAttribute("keyword", keyword);
         return "list";
     }
+
 
 
     @GetMapping("/view")
@@ -102,8 +99,27 @@ public class BoardController {
                 .filter(c -> c.getParent() == null)
                 .collect(Collectors.toList());
 
+        // ✅ 닉네임 매핑 (작성자 ID -> 닉네임)
+        Map<String, String> writerToNickname = new HashMap<>();
+        for (Comment c : allComments) {
+            writerToNickname.putIfAbsent(
+                    c.getWriter(),
+                    userService.findByUsername(c.getWriter())
+                            .map(User::getNickname)
+                            .orElse("알 수 없음")
+            );
+        }
+
+        // 🔸 대댓글 닉네임도 포함시키기 위해 allComments 기준
+
         model.addAttribute("board", board);
-        model.addAttribute("comments", topLevelComments); // 💡 대댓글은 제외된 댓글만 전달
+        model.addAttribute("comments", topLevelComments);
+        model.addAttribute("writerToNickname", writerToNickname); // 👈 추가
+
+        // 게시글 작성자 닉네임도 전달
+        userService.findByUsername(board.getWriter()).ifPresent(user ->
+                model.addAttribute("nickname", user.getNickname())
+        );
 
         if (principal != null) {
             model.addAttribute("currentUser", principal.getName());

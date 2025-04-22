@@ -17,7 +17,7 @@
 
             <h2><input type="text" id="subject" name="subject" th:value="${board.subject}" readonly /></h2>
             <p class="post-meta">
-                작성자: <span th:text="${board.writer}"></span> |
+                작성자: <span th:text="${nickname}"></span>|
                 작성일: <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
             </p>
             <div class="post-body" th:utext="${board.content}"></div>
@@ -46,7 +46,7 @@
         <div th:each="cmt : ${comments}" class="comment-box" th:id="'comment-' + ${cmt.id}">
             <div class="comment-main">
                 <div class="comment-header">
-                    <strong th:text="${cmt.nickname}"></strong>
+                    <strong th:text="${writerToNickname[cmt.writer]}"></strong>
                     <small th:text="${#temporals.format(cmt.createdDate, 'yyyy-MM-dd HH:mm')}"></small>
 
                     <div th:if="${#authentication.name == cmt.writer}" class="comment-buttons">
@@ -86,7 +86,7 @@
             <!-- 대댓글 출력 -->
             <div th:each="reply : ${cmt.replies}" class="reply-box" style="margin-left: 40px;">
                 <div class="reply-header">
-                    <strong th:text="${reply.nickname}"></strong>
+                    <strong th:text="${writerToNickname[cmt.writer]}"></strong>
                     <small th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm')}"></small>
 
                     <div th:if="${#authentication.name == reply.writer}" class="reply-buttons">
