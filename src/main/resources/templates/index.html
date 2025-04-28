@@ -18,11 +18,15 @@
 
     <section class="closet-section">
       <div class="closet-header">
-        <h2>👔 나의 옷장</h2>
-        <button class="add-button">＋</button>
+        <h2>
+          <a href="/mycloset" class="link-text">👔 나의 옷장</a>
+        </h2>
+        <a href="/plusclothes" class="add-button">＋</a>
       </div>
       <div class="closet-items">
-        <!-- 옷 카드들이 들어갈 자리 -->
+        <div class="closet-preview-card" th:each="clothes : ${clothesList}">
+          <img th:src="@{${clothes.imagePath}}" alt="옷 이미지" class="preview-image">
+        </div>
       </div>
     </section>
   </main>

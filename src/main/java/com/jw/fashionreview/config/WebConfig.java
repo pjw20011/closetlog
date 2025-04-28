@@ -12,8 +12,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 브라우저가 /uploads/ 요청하면 실제 디스크의 경로에서 파일을 찾아줌
+        // 게시판 이미지
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:///C:/Users/kisyj/Desktop/fashionReview/fashionreview/uploads/");
+
+        // 옷 등록 이미지
+        registry.addResourceHandler("/clothes/**")
+                .addResourceLocations("file:///C:/Users/kisyj/Desktop/fashionReview/fashionreview/src/main/resources/static/clothes/");
     }
 }

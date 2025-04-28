@@ -47,10 +47,5 @@ public class Usercontroller {
         return "/login";
     }
 
-    @GetMapping("/")
-    public String showHomePage(){
-        return "index";
-    }
-
 
 }

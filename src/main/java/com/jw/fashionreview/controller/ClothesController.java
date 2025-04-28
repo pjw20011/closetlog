@@ -11,10 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/clothes")
 public class ClothesController {
 
     private final ClothesService clothesService;
@@ -22,13 +28,41 @@ public class ClothesController {
     @GetMapping("/plusclothes")
     public String plusclothesForm(Model model) {
         model.addAttribute("clothes", new Clothes());
-        return "clothes/plusclothes"; // templates/clothes/plusclothes.html
+        return "/plusclothes";
     }
 
     @PostMapping("/plusclothes")
-    public String plusclothes(Clothes clothes, @AuthenticationPrincipal UserDetails userDetails) {
-        // TODO: 로그인한 사용자 정보 연결 예정
+    public String plusclothes(@RequestParam("imageFile") MultipartFile imageFile, Clothes clothes,
+                              @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+
+        if (!imageFile.isEmpty()) {
+            // 저장 경로 설정 (변경)
+            String uploadDir = "C:/Users/kisyj/Desktop/fashionReview/fashionreview/src/main/resources/static/clothes/";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) dir.mkdirs(); // 폴더 없으면 생성
+
+            // 파일명 유니크하게 생성
+            String filename = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+            String filepath = uploadDir + filename;
+
+            // 파일 저장
+            imageFile.transferTo(new File(filepath));
+
+            // clothes에 경로 저장 (변경)
+            clothes.setImagePath("/clothes/" + filename);
+        }
+
+        // TODO: 로그인한 사용자 정보 clothes.setUser() 연결 예정
         clothesService.save(clothes);
-        return "redirect:/clothes/mycloset"; // 등록 후 내 옷장 화면으로 이동
+
+        return "redirect:/mycloset";
+    }
+
+    @GetMapping("/mycloset")
+    public String mycloset(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // TODO: 로그인한 사용자 정보 기반으로 옷 목록 불러오기
+        List<Clothes> clothesList = clothesService.findAll(); // (임시로 전체 조회)
+        model.addAttribute("clothesList", clothesList);
+        return "/mycloset";
     }
 }

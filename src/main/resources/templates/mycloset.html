@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내 옷장</title>
+  <link rel="stylesheet" th:href="@{/css/mycloset.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<h1>내 옷장</h1>
+
+<div class="closet-grid">
+  <div class="closet-card" th:each="clothes : ${clothesList}">
+    <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
+    <div class="closet-info">
+      <p><strong>카테고리:</strong> <span th:text="${clothes.category}"></span></p>
+      <p><strong>색상:</strong> <span th:text="${clothes.color}"></span></p>
+      <p><strong>패턴:</strong> <span th:text="${clothes.pattern}"></span></p>
+      <p><strong>계절:</strong> <span th:text="${clothes.season}"></span></p>
+      <p><strong>스타일 태그:</strong> <span th:text="${clothes.tags}"></span></p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

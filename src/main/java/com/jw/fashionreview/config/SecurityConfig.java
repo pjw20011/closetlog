@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/upload")
+                        .ignoringRequestMatchers("/upload","/clothes")
                         .disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login","/send-code","verify-code","/css/**", "/uploads/**").permitAll()

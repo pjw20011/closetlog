@@ -20,4 +20,9 @@ public class ClothesService {
     public List<Clothes> findByUserId(Long userId) {
         return clothesRepository.findByUserId(userId);
     }
+
+    public List<Clothes> findAll() {
+        return clothesRepository.findAll();
+    }
+
 }
