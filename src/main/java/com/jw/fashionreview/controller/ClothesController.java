@@ -52,6 +52,11 @@ public class ClothesController {
             clothes.setImagePath("/clothes/" + filename);
         }
 
+        // 사용자 정보 clothes에 저장
+        String username = userDetails.getUsername(); // username으로 사용자 조회
+        User user = clothesService.findUserByUsername(username); // 아래 단계에서 추가할 메소드
+        clothes.setUser(user);
+
         // TODO: 로그인한 사용자 정보 clothes.setUser() 연결 예정
         clothesService.save(clothes);
 
@@ -60,9 +65,12 @@ public class ClothesController {
 
     @GetMapping("/mycloset")
     public String mycloset(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        // TODO: 로그인한 사용자 정보 기반으로 옷 목록 불러오기
-        List<Clothes> clothesList = clothesService.findAll(); // (임시로 전체 조회)
+        String username = userDetails.getUsername();
+        User user = clothesService.findUserByUsername(username);
+        List<Clothes> clothesList = clothesService.findByUserId(user.getId());
+
         model.addAttribute("clothesList", clothesList);
         return "/mycloset";
     }
+
 }
