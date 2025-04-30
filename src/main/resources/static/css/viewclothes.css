@@ -1,0 +1,32 @@
+.view-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.clothes-detail-card {
+    display: flex;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    gap: 30px;
+    padding: 20px;
+}
+
+.detail-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.detail-info {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+}
+
+.detail-info p {
+    margin-bottom: 12px;
+}

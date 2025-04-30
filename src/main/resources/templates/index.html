@@ -25,7 +25,9 @@
       </div>
       <div class="closet-items">
         <div class="closet-preview-card" th:each="clothes : ${clothesList}">
-          <img th:src="@{${clothes.imagePath}}" alt="옷 이미지" class="preview-image">
+          <a th:href="@{'/viewclothes/' + ${clothes.id}}">
+            <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
+          </a>
         </div>
       </div>
     </section>

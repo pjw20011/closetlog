@@ -34,4 +34,16 @@ public class ClothesService {
     }
 
 
+    public Clothes findById(String id) {
+        return clothesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷을 찾을 수 없습니다: " + id));
+    }
+
+    public List<Clothes> findByCategory(String category) {
+        return clothesRepository.findByCategory(category);
+    }
+
+
+
+
 }

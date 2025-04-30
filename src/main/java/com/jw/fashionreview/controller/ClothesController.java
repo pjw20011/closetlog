@@ -8,10 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -70,7 +67,20 @@ public class ClothesController {
         List<Clothes> clothesList = clothesService.findByUserId(user.getId());
 
         model.addAttribute("clothesList", clothesList);
+        model.addAttribute("topList", clothesService.findByCategory("상의"));
+        model.addAttribute("bottomList", clothesService.findByCategory("하의"));
+        model.addAttribute("outerList", clothesService.findByCategory("아우터"));
+        model.addAttribute("etcList", clothesService.findByCategory("기타"));
+
         return "/mycloset";
     }
+
+    @GetMapping("/viewclothes/{id}")
+    public String viewClothes(@PathVariable String id, Model model) {
+        Clothes clothes = clothesService.findById(id);
+        model.addAttribute("clothes", clothes);
+        return "/viewclothes";
+    }
+
 
 }

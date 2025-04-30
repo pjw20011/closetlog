@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>옷 상세보기</title>
+  <link rel="stylesheet" th:href="@{/css/viewclothes.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+
+<div class="view-container">
+  <h1>옷 상세정보</h1>
+
+  <div class="clothes-detail-card">
+    <img th:src="@{${clothes.imagePath}}" alt="옷 이미지" class="detail-image">
+
+    <div class="detail-info">
+      <p><strong>카테고리:</strong> <span th:text="${clothes.category}"></span></p>
+      <p><strong>색상:</strong> <span th:text="${clothes.color}"></span></p>
+      <p><strong>패턴:</strong> <span th:text="${clothes.pattern}"></span></p>
+      <p><strong>계절:</strong> <span th:text="${clothes.season}"></span></p>
+      <p><strong>스타일 태그:</strong> <span th:text="${clothes.tags}"></span></p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

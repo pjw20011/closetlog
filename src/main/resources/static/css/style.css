@@ -132,6 +132,19 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     background-color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.closet-preview-card img {
+    width: 100px;           /* 원하는 너비 */
+    height: 100px;  /* 원하는 높이 */
+    object-fit: cover;      /* 비율 유지하면서 자르기 */
+    border-radius: 8px;     /* 모서리 둥글게 (선택사항) */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 약간의 그림자 */
+
+
 }
 
 .preview-image {

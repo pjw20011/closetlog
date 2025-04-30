@@ -8,20 +8,46 @@
 </head>
 <body>
 <div th:replace="header :: header"></div>
-<h1>내 옷장</h1>
+<div class="closet-container">
+  <div class="closet-header">
+    <h1>내 옷장</h1>
+    <a href="/plusclothes" class="add-clothes-button">＋</a>
+  </div>
 
-<div class="closet-grid">
-  <div class="closet-card" th:each="clothes : ${clothesList}">
-    <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
-    <div class="closet-info">
-      <p><strong>카테고리:</strong> <span th:text="${clothes.category}"></span></p>
-      <p><strong>색상:</strong> <span th:text="${clothes.color}"></span></p>
-      <p><strong>패턴:</strong> <span th:text="${clothes.pattern}"></span></p>
-      <p><strong>계절:</strong> <span th:text="${clothes.season}"></span></p>
-      <p><strong>스타일 태그:</strong> <span th:text="${clothes.tags}"></span></p>
+  <!-- 카테고리 필터 버튼 -->
+  <div class="filter-buttons">
+    <button onclick="filterCategory('상의')">👕 상의</button>
+    <button onclick="filterCategory('하의')">👖 하의</button>
+    <button onclick="filterCategory('아우터')">🧥 아우터</button>
+    <button onclick="filterCategory('기타')">📦 기타</button>
+    <button onclick="filterCategory('전체')">🔄 전체</button>
+  </div>
+
+  <!-- 카드들 (category 클래스를 활용한 구분) -->
+  <div class="closet-grid">
+    <div class="closet-card" th:each="clothes : ${clothesList}"
+         th:classappend="' ' + ${clothes.category}">
+      <a th:href="@{'/viewclothes/' + ${clothes.id}}">
+        <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
+      </a>
     </div>
   </div>
 </div>
-
 </body>
+<script>
+  function filterCategory(category) {
+    const cards = document.querySelectorAll('.closet-card');
+    cards.forEach(card => {
+      if (category === '전체') {
+        card.style.display = 'flex';
+      } else if (card.classList.contains(category)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+
 </html>
