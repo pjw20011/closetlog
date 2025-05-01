@@ -26,8 +26,8 @@
   <!-- 카드들 (category 클래스를 활용한 구분) -->
   <div class="closet-grid">
     <div class="closet-card" th:each="clothes : ${clothesList}"
-         th:classappend="' ' + ${clothes.category}">
-      <a th:href="@{'/viewclothes/' + ${clothes.id}}">
+         th:classappend="' ' + ${clothes.category.trim()}">
+    <a th:href="@{'/viewclothes/' + ${clothes.id}}">
         <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
       </a>
     </div>
@@ -38,9 +38,8 @@
   function filterCategory(category) {
     const cards = document.querySelectorAll('.closet-card');
     cards.forEach(card => {
-      if (category === '전체') {
-        card.style.display = 'flex';
-      } else if (card.classList.contains(category)) {
+      const classList = Array.from(card.classList).map(c => c.trim().toLowerCase());
+      if (category === '전체' || classList.includes(category.toLowerCase())) {
         card.style.display = 'flex';
       } else {
         card.style.display = 'none';

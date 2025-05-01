@@ -76,11 +76,33 @@ public class ClothesController {
     }
 
     @GetMapping("/viewclothes/{id}")
-    public String viewClothes(@PathVariable String id, Model model) {
+    public String viewClothes(@PathVariable Long id, Model model) {
         Clothes clothes = clothesService.findById(id);
         model.addAttribute("clothes", clothes);
         return "/viewclothes";
     }
+
+    @PostMapping("/editclothes")
+    public String editClothes(@ModelAttribute Clothes clothes, @AuthenticationPrincipal UserDetails userDetails) {
+        // 현재 로그인한 사용자 조회
+        String username = userDetails.getUsername();
+        User user = clothesService.findUserByUsername(username);
+
+        // 기존 정보 보존
+        Clothes original = clothesService.findById(clothes.getId());
+        clothes.setImagePath(original.getImagePath()); // 이미지 경로 보존
+        clothes.setUser(user); // 사용자 정보 다시 설정
+
+        clothesService.save(clothes);
+        return "redirect:/viewclothes/" + clothes.getId();
+    }
+
+    @PostMapping("/deleteclothes/{id}")
+    public String deleteClothes(@PathVariable Long id) {
+        clothesService.deleteById(id); // 서비스에서 삭제
+        return "redirect:/mycloset";   // 삭제 후 옷장으로 이동
+    }
+
 
 
 }
