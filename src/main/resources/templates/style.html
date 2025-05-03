@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>스타일 추천</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
+<div th:replace="header :: header"></div>
 <div class="container">
   <h1>👗 스타일 추천</h1>
 
@@ -16,12 +18,21 @@
 
   <!-- 추천이 있을 경우 -->
   <div th:each="style : ${recommendations}" class="style-card">
-    <div class="top">
-      <strong>상의 색상:</strong> <span th:text="${style.top.color}"></span>
+    <div>
+      <div class="color-label">상의 색상: <span th:text="${style.top.color}"></span></div>
+      <div class="style-images">
+        <img th:src="@{${style.top.imagePath}}" alt="Top Image">
+      </div>
     </div>
-    <div class="bottom">
-      <strong>추천 하의 색상:</strong>
-      <span th:each="bottom : ${style.recommendedBottoms}" th:text="${bottom.color}" class="bottom-color"></span>
+
+    <div class="bottom-combination">
+      <div class="color-label">추천 하의:</div>
+      <div class="style-images" th:each="bottom : ${style.recommendedBottoms}">
+        <div style="text-align: center;">
+          <img th:src="@{${bottom.imagePath}}" alt="Bottom Image">
+          <div th:text="${bottom.color}" style="margin-top: 5px;"></div>
+        </div>
+      </div>
     </div>
   </div>
 

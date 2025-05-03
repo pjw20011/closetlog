@@ -1,18 +1,46 @@
 .container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
 }
 
 .style-card {
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: #fafafa;
+    padding: 20px;
+    margin-bottom: 30px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.bottom-color {
-    margin-right: 8px;
-    display: inline-block;
+/* style.css 예시 */
+.style-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.style-images img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+
+.color-label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.bottom-combination {
+    margin-top: 15px;
 }
