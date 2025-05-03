@@ -47,6 +47,11 @@ public class ClothesService {
         clothesRepository.deleteById(id);
     }
 
+    public List<Clothes> findByUser(User user) {
+        return clothesRepository.findByUser(user);
+    }
+
+
 
 
 

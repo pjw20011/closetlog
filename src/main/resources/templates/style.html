@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>스타일 추천</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+  <h1>👗 스타일 추천</h1>
+
+  <!-- 추천이 없을 경우 -->
+  <div th:if="${#lists.isEmpty(recommendations)}">
+    <p>추천할 스타일이 없습니다.</p>
+  </div>
+
+  <!-- 추천이 있을 경우 -->
+  <div th:each="style : ${recommendations}" class="style-card">
+    <div class="top">
+      <strong>상의 색상:</strong> <span th:text="${style.top.color}"></span>
+    </div>
+    <div class="bottom">
+      <strong>추천 하의 색상:</strong>
+      <span th:each="bottom : ${style.recommendedBottoms}" th:text="${bottom.color}" class="bottom-color"></span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

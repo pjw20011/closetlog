@@ -1,0 +1,154 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #111111;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111111;
+}
+
+.nav {
+    display: flex;
+    font-size:24px;
+    align-items: flex-start;
+}
+
+.nav-link {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #111111;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.main-layout {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 20px;
+    gap: 40px;
+}
+
+.calendar-section, .closet-section {
+    width: 50%;
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.calendar-section h2,
+.closet-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.closet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-button {
+    font-size: 20px;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.add-button:hover {
+    background-color: #f0f0f0;
+}
+
+.closet-items {
+    margin-top: 20px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.user-icon-link {
+    text-decoration: none;
+}
+
+.user-icon:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.welcome a,
+.welcome span {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.closet-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.closet-preview-card {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.closet-preview-card img {
+    width: 100px;           /* 원하는 너비 */
+    height: 100px;  /* 원하는 높이 */
+    object-fit: cover;      /* 비율 유지하면서 자르기 */
+    border-radius: 8px;     /* 모서리 둥글게 (선택사항) */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 약간의 그림자 */
+
+
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
