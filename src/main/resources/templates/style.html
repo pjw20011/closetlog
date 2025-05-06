@@ -16,8 +16,21 @@
     <p>추천할 스타일이 없습니다.</p>
   </div>
 
+
+
   <!-- 추천이 있을 경우 -->
   <div th:each="style : ${recommendations}" class="style-card">
+    <!-- 추천 아우터 -->
+    <div class="outer-combination">
+      <div class="color-label">추천 아우터:</div>
+      <div class="style-images" th:each="outer : ${style.recommendedOuters}">
+        <div style="text-align: center;">
+          <img th:src="@{${outer.imagePath}}" alt="Outer Image">
+          <div th:text="${outer.color}" style="margin-top: 5px;"></div>
+        </div>
+      </div>
+    </div>
+
     <div>
       <div class="color-label">상의 색상: <span th:text="${style.top.color}"></span></div>
       <div class="style-images">

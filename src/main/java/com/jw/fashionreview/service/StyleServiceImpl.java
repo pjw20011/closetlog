@@ -28,12 +28,13 @@ public class StyleServiceImpl implements StyleService {
 
         List<Clothes> tops = new ArrayList<>();
         List<Clothes> bottoms = new ArrayList<>();
+        List<Clothes> outers = new ArrayList<>();
 
         for (Clothes c : userClothes) {
-            if ("상의".equals(c.getCategory())) {
-                tops.add(c);
-            } else if ("하의".equals(c.getCategory())) {
-                bottoms.add(c);
+            switch (c.getCategory()) {
+                case "상의" -> tops.add(c);
+                case "하의" -> bottoms.add(c);
+                case "아우터" -> outers.add(c);
             }
         }
 
@@ -41,21 +42,23 @@ public class StyleServiceImpl implements StyleService {
 
         for (Clothes top : tops) {
             List<String> matchedColors = getRecommendedBottomColors(top.getColor());
-            List<Clothes> matchedBottoms = new ArrayList<>();
 
-            for (Clothes bottom : bottoms) {
-                if (matchedColors.contains(bottom.getColor())) {
-                    matchedBottoms.add(bottom);
-                }
-            }
+            List<Clothes> matchedBottoms = bottoms.stream()
+                    .filter(b -> matchedColors.contains(b.getColor()))
+                    .collect(Collectors.toList());
 
-            if (!matchedBottoms.isEmpty()) {
-                recommendations.add(new StyleRecommendationDto(top, matchedBottoms));
+            List<Clothes> matchedOuters = outers.stream()
+                    .filter(o -> matchedColors.contains(o.getColor())) // 단순히 같은 매칭으로 처리
+                    .collect(Collectors.toList());
+
+            if (!matchedBottoms.isEmpty() && !matchedOuters.isEmpty()) {
+                recommendations.add(new StyleRecommendationDto(top, matchedBottoms, matchedOuters));
             }
         }
 
         return recommendations;
     }
+
 
     private Map<String, List<String>> getColorMatchMap() {
         Map<String, List<String>> map = new HashMap<>();
