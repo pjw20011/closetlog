@@ -11,30 +11,30 @@ h1 {
     margin-bottom: 30px;
 }
 
-.style-card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 30px;
-    background-color: #fdfdfd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* style.css 예시 */
-.style-images {
+.style-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
+    justify-content: center;
 }
 
-.style-images img {
-    width: 120px;
-    height: 120px;
+.style-card {
+    width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.style-item img {
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    margin-bottom: 5px;
 }
-
 
 .color-label {
     font-weight: bold;

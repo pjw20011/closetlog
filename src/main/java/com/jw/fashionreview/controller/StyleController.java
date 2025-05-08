@@ -36,7 +36,6 @@ public class StyleController {
         // 추천 서비스 호출
         List<StyleRecommendationDto> recommendations = styleService.recommendStyles(username);
 
-
         // 뷰에 전달
         model.addAttribute("recommendations", recommendations);
         return "style";

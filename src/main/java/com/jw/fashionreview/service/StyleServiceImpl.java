@@ -3,62 +3,18 @@ package com.jw.fashionreview.service;
 import com.jw.fashionreview.domain.Clothes;
 import com.jw.fashionreview.domain.User;
 import com.jw.fashionreview.dto.StyleRecommendationDto;
-import com.jw.fashionreview.repository.ClothesRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class StyleServiceImpl implements StyleService {
 
-    private final ClothesRepository clothesRepository;
-    private final UserService userService;
+    private final ClothesService clothesService;
 
-    public StyleServiceImpl(ClothesRepository clothesRepository, UserService userService) {
-        this.clothesRepository = clothesRepository;
-        this.userService = userService;
+    public StyleServiceImpl(ClothesService clothesService) {
+        this.clothesService = clothesService;
     }
-
-    @Override
-    public List<StyleRecommendationDto> recommendStyles(String username) {
-        User user = userService.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        List<Clothes> userClothes = clothesRepository.findByUser(user);
-
-        List<Clothes> tops = new ArrayList<>();
-        List<Clothes> bottoms = new ArrayList<>();
-        List<Clothes> outers = new ArrayList<>();
-
-        for (Clothes c : userClothes) {
-            switch (c.getCategory()) {
-                case "상의" -> tops.add(c);
-                case "하의" -> bottoms.add(c);
-                case "아우터" -> outers.add(c);
-            }
-        }
-
-        List<StyleRecommendationDto> recommendations = new ArrayList<>();
-
-        for (Clothes top : tops) {
-            List<String> matchedColors = getRecommendedBottomColors(top.getColor());
-
-            List<Clothes> matchedBottoms = bottoms.stream()
-                    .filter(b -> matchedColors.contains(b.getColor()))
-                    .collect(Collectors.toList());
-
-            List<Clothes> matchedOuters = outers.stream()
-                    .filter(o -> matchedColors.contains(o.getColor())) // 단순히 같은 매칭으로 처리
-                    .collect(Collectors.toList());
-
-            if (!matchedBottoms.isEmpty() && !matchedOuters.isEmpty()) {
-                recommendations.add(new StyleRecommendationDto(top, matchedBottoms, matchedOuters));
-            }
-        }
-
-        return recommendations;
-    }
-
 
     private Map<String, List<String>> getColorMatchMap() {
         Map<String, List<String>> map = new HashMap<>();
@@ -78,9 +34,30 @@ public class StyleServiceImpl implements StyleService {
         return map;
     }
 
-    private List<String> getRecommendedBottomColors(String topColor) {
+    @Override
+    public List<StyleRecommendationDto> recommendStyles(String username) {
+        User user = clothesService.findUserByUsername(username);
+        List<Clothes> allClothes = clothesService.findByUser(user);
+
+        List<Clothes> tops = allClothes.stream().filter(c -> "상의".equals(c.getCategory())).collect(Collectors.toList());
+        List<Clothes> bottoms = allClothes.stream().filter(c -> "하의".equals(c.getCategory())).collect(Collectors.toList());
+        List<Clothes> outers = allClothes.stream().filter(c -> "아우터".equals(c.getCategory())).collect(Collectors.toList());
+
         Map<String, List<String>> colorMap = getColorMatchMap();
-        return colorMap.getOrDefault(topColor, new ArrayList<>());
+        List<StyleRecommendationDto> recommendations = new ArrayList<>();
+
+        for (Clothes top : tops) {
+            List<Clothes> matchedBottoms = bottoms.stream()
+                    .filter(b -> colorMap.getOrDefault(top.getColor(), Collections.emptyList()).contains(b.getColor()))
+                    .collect(Collectors.toList());
+
+            List<Clothes> matchedOuters = outers.stream()
+                    .filter(o -> colorMap.getOrDefault(top.getColor(), Collections.emptyList()).contains(o.getColor()))
+                    .collect(Collectors.toList());
+
+            recommendations.add(new StyleRecommendationDto(top, matchedBottoms, matchedOuters));
+        }
+
+        return recommendations;
     }
 }
-

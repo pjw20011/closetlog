@@ -11,44 +11,34 @@
 <div class="container">
   <h1>👗 스타일 추천</h1>
 
-  <!-- 추천이 없을 경우 -->
   <div th:if="${#lists.isEmpty(recommendations)}">
     <p>추천할 스타일이 없습니다.</p>
   </div>
 
-
-
-  <!-- 추천이 있을 경우 -->
-  <div th:each="style : ${recommendations}" class="style-card">
-    <!-- 추천 아우터 -->
-    <div class="outer-combination">
-      <div class="color-label">추천 아우터:</div>
-      <div class="style-images" th:each="outer : ${style.recommendedOuters}">
-        <div style="text-align: center;">
-          <img th:src="@{${outer.imagePath}}" alt="Outer Image">
-          <div th:text="${outer.color}" style="margin-top: 5px;"></div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div class="color-label">상의 색상: <span th:text="${style.top.color}"></span></div>
+  <div class="style-grid">
+    <div th:each="style : ${recommendations}" class="style-card">
       <div class="style-images">
-        <img th:src="@{${style.top.imagePath}}" alt="Top Image">
-      </div>
-    </div>
+        <!-- 상의 -->
+        <div class="style-item">
+          <img th:src="@{${style.top.imagePath}}" alt="Top">
+          <div>상의: <span th:text="${style.top.color}"></span></div>
+        </div>
 
-    <div class="bottom-combination">
-      <div class="color-label">추천 하의:</div>
-      <div class="style-images" th:each="bottom : ${style.recommendedBottoms}">
-        <div style="text-align: center;">
-          <img th:src="@{${bottom.imagePath}}" alt="Bottom Image">
-          <div th:text="${bottom.color}" style="margin-top: 5px;"></div>
+        <!-- 하의 -->
+        <div th:each="bottom : ${style.recommendedBottoms}" class="style-item">
+          <img th:src="@{${bottom.imagePath}}" alt="Bottom">
+          <div>하의: <span th:text="${bottom.color}"></span></div>
+        </div>
+
+        <!-- 아우터 -->
+        <div th:if="${!#lists.isEmpty(style.recommendedOuters)}"
+             th:each="outer : ${style.recommendedOuters}" class="style-item">
+          <img th:src="@{${outer.imagePath}}" alt="Outer">
+          <div>아우터: <span th:text="${outer.color}"></span></div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 </body>
 </html>
