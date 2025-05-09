@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>데일리룩 등록</title>
+</head>
+<body>
+<h1>데일리룩 등록하기</h1>
+
+<form th:action="@{/dailylook}" method="post" enctype="multipart/form-data">
+  <label>사진 업로드:</label>
+  <input type="file" name="imageFile" accept="image/*" required><br><br>
+
+  <label>코멘트:</label><br>
+  <textarea name="comment" rows="4" cols="50" required></textarea><br><br>
+
+  <label>공개여부:</label>
+  <input type="radio" name="isPublic" value="true" checked> 공개
+  <input type="radio" name="isPublic" value="false"> 비공개<br><br>
+
+  <button type="submit">등록하기</button>
+</form>
+</body>
+</html>

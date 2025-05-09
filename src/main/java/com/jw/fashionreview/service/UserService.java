@@ -12,4 +12,6 @@ public interface UserService {
     void updateNicknameAndPassword(String username, String nickname, String password);
 
     boolean isNicknameDuplicate(String nickname);
+
+    Optional<User> findById(Long id);
 }

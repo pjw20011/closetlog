@@ -19,5 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
         // 옷 등록 이미지
         registry.addResourceHandler("/clothes/**")
                 .addResourceLocations("file:///C:/Users/kisyj/Desktop/fashionReview/fashionreview/src/main/resources/static/clothes/");
+        // 데일리룩 이미지
+        registry.addResourceHandler("/dailylook/**")
+                .addResourceLocations("file:///C:/Users/kisyj/Desktop/fashionReview/fashionreview/src/main/resources/static/dailylook/");
     }
 }

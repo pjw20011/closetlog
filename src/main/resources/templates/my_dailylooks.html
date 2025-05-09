@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>내 데일리룩</title>
+  <link rel="stylesheet" th:href="@{/css/my_dailylooks.css}">
+</head>
+<body>
+<h1>내 데일리룩</h1>
+
+<div class="dailylook-container">
+  <div class="dailylook-card" th:each="look : ${dailyLooks}">
+    <img th:src="${look.imageUrl}" alt="데일리룩">
+    <div class="dailylook-date" th:text="${look.createdAt}"></div>
+    <div class="dailylook-comment" th:text="${look.comment}"></div>
+    <div class="dailylook-status" th:text="${look.isPublic} ? '공개' : '비공개'"></div>
+  </div>
+</div>
+
+</body>
+</html>
