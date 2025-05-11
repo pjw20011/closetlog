@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>내 데일리룩</title>
+  <title>내 데일리룩 </title>
   <link rel="stylesheet" th:href="@{/css/my_dailylooks.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
-<h1>내 데일리룩</h1>
+<div th:replace="header :: header"></div>
+<h1>내 데일리룩 </h1>
 
-<div class="dailylook-container">
-  <div class="dailylook-card" th:each="look : ${dailyLooks}">
-    <img th:src="${look.imageUrl}" alt="데일리룩">
-    <div class="dailylook-date" th:text="${look.createdAt}"></div>
-    <div class="dailylook-comment" th:text="${look.comment}"></div>
-    <div class="dailylook-status" th:text="${look.isPublic} ? '공개' : '비공개'"></div>
-  </div>
-</div>
+<table class="calendar">
+  <thead>
+  <tr>
+    <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="week : ${calendar}">
+    <td th:each="day : ${week}"
+        th:classappend="${day != null and day.date == T(java.time.LocalDate).now()} ? 'today-cell'">
+      <div th:if="${day != null}">
+        <div class="day-number" th:text="${day.date.dayOfMonth}"></div>
+        <div th:if="${day.dailyLook != null}">
+          <a th:href="@{/my/dailylook/{id}(id=${day.dailyLook.id})}">
+            <img th:src="${day.dailyLook.imageUrl}" width="80">
+          </a>
+        </div>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
 </body>
 </html>

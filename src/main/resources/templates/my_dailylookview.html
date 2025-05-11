@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>데일리룩 상세보기</title>
+    <head>
+        <title>데일리룩 상세보기</title>
+        <link rel="stylesheet" th:href="@{/css/my_dailylookview.css}">
+        <link rel="stylesheet" th:href="@{/css/header.css}">
+    </head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="dailylook-view-container">
+    <!-- 이미지 -->
+    <img th:src="${dailyLook.imageUrl}" alt="데일리룩 이미지">
+
+    <!-- 날짜/코멘트/공개 여부 + 수정/삭제 버튼 한 줄 -->
+    <div class="dailylook-info-line">
+        <div class="info-text">
+            <p><strong>날짜:</strong> <span th:text="${dailyLook.createdAt}"></span></p>
+            <p><strong>코멘트:</strong> <span th:text="${dailyLook.comment}"></span></p>
+            <p><strong>공개 여부:</strong> <span th:text="${dailyLook.isPublic} ? '공개' : '비공개'"></span></p>
+        </div>
+
+        <div class="actions" th:if="${#authentication.name == dailyLook.user.username}">
+            <button type="button" id="editToggleBtn">수정</button>
+            <form th:action="@{/my/dailylook/delete/{id}(id=${dailyLook.id})}" method="post" style="display:inline;">
+                <button type="submit" class="delete-btn">삭제</button>
+            </form>
+        </div>
+    </div>
+    <!-- 수정 폼 (토글 열림) -->
+    <div id="editForm">
+        <form th:action="@{/my/dailylook/update/{id}(id=${dailyLook.id})}" method="post">
+            <label>코멘트 수정:</label>
+            <input type="text" name="comment" th:value="${dailyLook.comment}" required>
+
+            <label>공개여부 수정:</label>
+            <select name="isPublic">
+                <option value="true" th:selected="${dailyLook.isPublic}">공개</option>
+                <option value="false" th:selected="${!dailyLook.isPublic}">비공개</option>
+            </select>
+
+            <button type="submit">수정 완료</button>
+        </form>
+    </div>
+
+    <a th:href="@{/my}" style="display: block; margin-top: 20px;">← 내 데일리룩으로 돌아가기</a>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const editBtn = document.getElementById("editToggleBtn");
+        const editForm = document.getElementById("editForm");
+
+        editBtn.addEventListener("click", function() {
+            if (editForm.style.display === "none" || editForm.style.display === "") {
+                editForm.style.display = "block";
+            } else {
+                editForm.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

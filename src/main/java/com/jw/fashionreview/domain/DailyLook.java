@@ -25,4 +25,8 @@ public class DailyLook {
     private boolean isPublic;
 
     private LocalDate createdAt;
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,4 +36,9 @@ public class DailyLookService {
     public DailyLook updateDailyLook(DailyLook dailyLook) {
         return dailyLookRepository.save(dailyLook);
     }
+
+    public Optional<DailyLook> findById(Long id) {
+        return dailyLookRepository.findById(id);
+    }
+
 }

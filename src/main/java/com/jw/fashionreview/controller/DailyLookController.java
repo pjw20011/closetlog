@@ -2,6 +2,7 @@ package com.jw.fashionreview.controller;
 
 import com.jw.fashionreview.domain.DailyLook;
 import com.jw.fashionreview.domain.User;
+import com.jw.fashionreview.dto.DayCell;
 import com.jw.fashionreview.service.DailyLookService;
 import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -87,11 +91,77 @@ public class DailyLookController {
 
     @GetMapping("/my")
     public String getMyDailyLooks(Model model) {
-        Long userId = 1L;  // TODO: 로그인한 사용자 ID로 대체
+        Long userId = 1L;  // TODO: 로그인 사용자로 교체
         List<DailyLook> dailyLooks = dailyLookService.getMyDailyLooks(userId);
-        model.addAttribute("dailyLooks", dailyLooks);
+
+        Map<LocalDate, DailyLook> lookMap = dailyLooks.stream()
+                .collect(Collectors.toMap(DailyLook::getCreatedAt, d -> d));
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDay = today.withDayOfMonth(1);
+        LocalDate lastDay = today.withDayOfMonth(today.lengthOfMonth());
+
+        List<List<DayCell>> calendar = new ArrayList<>();
+        List<DayCell> week = new ArrayList<>();
+
+        int dayOfWeekValue = firstDay.getDayOfWeek().getValue() % 7;  // 일=0, 월=1, ...
+        for (int i = 0; i < dayOfWeekValue; i++) {
+            week.add(null);  // 앞쪽 빈칸
+        }
+
+        for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
+            DailyLook look = lookMap.get(date);
+            week.add(new DayCell(date, look));
+            if (week.size() == 7) {
+                calendar.add(new ArrayList<>(week));
+                week.clear();
+            }
+        }
+        if (!week.isEmpty()) {
+            while (week.size() < 7) {
+                week.add(null);  // 뒤쪽 빈칸
+            }
+            calendar.add(week);
+        }
+
+        model.addAttribute("calendar", calendar);
         return "my_dailylooks";
     }
+
+    @GetMapping("/my/dailylook/{id}")
+    public String viewDailyLook(@PathVariable Long id, Model model) {
+        DailyLook dailyLook = dailyLookService.findById(id)
+                .orElseThrow(() -> new RuntimeException("DailyLook not found"));
+        model.addAttribute("dailyLook", dailyLook);
+        return "my_dailylookview";
+    }
+
+    @PostMapping("/my/dailylook/update/{id}")
+    public String updateDailyLook(
+            @PathVariable Long id,
+            @RequestParam String comment,
+            @RequestParam boolean isPublic) {
+
+        DailyLook dailyLook = dailyLookService.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+
+        // TODO: 현재 로그인한 사용자 검증
+        dailyLook.setComment(comment);
+        dailyLook.setIsPublic(isPublic);
+
+        dailyLookService.updateDailyLook(dailyLook);
+
+        return "redirect:/my/dailylook/" + id;
+    }
+
+    @PostMapping("/my/dailylook/delete/{id}")
+    public String deleteDailyLook(@PathVariable Long id) {
+        dailyLookService.deleteDailyLook(id);
+        return "redirect:/my";
+    }
+
+
+
 
 
 

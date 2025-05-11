@@ -1,0 +1,103 @@
+.dailylook-view-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+.dailylook-view-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.dailylook-view-container p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+}
+
+.dailylook-view-container p strong {
+    color: #111;
+}
+
+.dailylook-info-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.info-text p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.actions button, .actions form button {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.actions button:hover, .actions form button:hover {
+    background-color: #e0e0e0;
+}
+
+.actions form button.delete-btn {
+    background-color: #232323;
+    color: white;
+}
+
+.actions form button.delete-btn:hover {
+    background-color: #424242;
+}
+
+
+#editForm {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#editForm label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+#editForm input, #editForm select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#editForm button {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#editForm button:hover {
+    background-color: #5a34a1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
