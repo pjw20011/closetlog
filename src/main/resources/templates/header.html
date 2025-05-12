@@ -1,17 +1,21 @@
-<!-- header.html -->
-<header class="header" th:fragment="header">
-    <a href="/" class="logo-container">
-        <img src="/images/logo.png" alt="ClosetLog 로고" class="logo">
-        <h1 class="logo-text">ClosetLog</h1>
-    </a>
-    <nav class="nav">
-        <a href="/list" class="nav-link">📌옷장 이야기</a>
-    </nav>
-    <div class="welcome">
-        <a href="/mypage" class="user-icon-link">
-            <img src="/images/user.png" alt="user아이콘" class="user-icon" />
+<!-- header.html 전체 -->
+<div th:fragment="header">
+    <header class="header">
+        <a href="/" class="logo-container">
+            <img src="/images/logo.png" alt="ClosetLog 로고" class="logo">
+            <h1 class="logo-text">ClosetLog</h1>
         </a>
-        <span th:text="${#authentication.principal.nickname}">사용자</span>님, 환영합니다!
-        <a href="/logout" class="nav-link">로그아웃</a>
-    </div>
-</header>
+        <div class="welcome">
+            <a href="/mypage" class="user-icon-link">
+                <img src="/images/user.png" alt="user아이콘" class="user-icon" />
+            </a>
+            <span th:text="${#authentication.principal.nickname}">사용자</span>님, 환영합니다!
+            <a href="/logout" class="nav-link">로그아웃</a>
+        </div>
+    </header>
+    <nav class="main-nav">
+        <a href="/my" class="main-nav-link">데일리룩</a>
+        <a href="/list" class="main-nav-link">옷장 이야기</a>
+        <a href="/mypage" class="main-nav-link">마이페이지</a>
+    </nav>
+</div>

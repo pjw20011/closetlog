@@ -1,0 +1,69 @@
+.dailylook-form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-family: 'Arial', sans-serif;
+}
+
+.dailylook-form-container h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #111;
+    text-align: center;
+}
+
+.dailylook-form-container label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.dailylook-form-container input[type="file"],
+.dailylook-form-container input[type="text"],
+.dailylook-form-container textarea,
+.dailylook-form-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.dailylook-form-container textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.radio-group label {
+    font-weight: normal;
+    color: #555;
+}
+
+.dailylook-form-container button {
+    margin-top: 25px;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dailylook-form-container button:hover {
+    background-color: #555;
+}

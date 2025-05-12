@@ -160,6 +160,22 @@ public class DailyLookController {
         return "redirect:/my";
     }
 
+    @GetMapping("/dailylooks")
+    public String getAllPublicDailyLooks(Model model) {
+        List<DailyLook> publicLooks = dailyLookService.getPublicDailyLooks();
+        model.addAttribute("dailyLooks", publicLooks);
+        return "dailylook"; // dailylook.html
+    }
+
+    @GetMapping("/dailylook/{id}")
+    public String viewPublicDailyLook(@PathVariable Long id, Model model) {
+        DailyLook dailyLook = dailyLookService.findById(id)
+                .orElseThrow(() -> new RuntimeException("DailyLook not found"));
+        model.addAttribute("dailyLook", dailyLook);
+        return "dailylookview"; // dailylookview.html
+    }
+
+
 
 
 

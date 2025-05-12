@@ -61,3 +61,26 @@
     margin-left: 5px;
     vertical-align: middle;
 }
+
+.main-nav {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    gap: 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.main-nav-link {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.main-nav-link:hover {
+    color: #ccc;
+    text-decoration: underline;
+}
