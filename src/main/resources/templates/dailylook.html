@@ -1,0 +1,25 @@
+<!-- templates/dailylook.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>전체 데일리룩</title>
+  <link rel="stylesheet" th:href="@{/css/dailylook.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<h1 style="text-align:center;">📷 전체 데일리룩</h1>
+
+<div class="dailylook-grid">
+  <div class="look-card" th:each="look : ${dailyLooks}">
+    <a th:href="@{'/dailylooks/view/' + ${look.id}}">
+    <img th:src="${look.imageUrl}" alt="데일리룩 이미지" />
+    </a>
+    <div class="look-meta">
+      <strong th:text="${look.user.nickname}">닉네임</strong>
+      <p th:text="${look.comment}">내용</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

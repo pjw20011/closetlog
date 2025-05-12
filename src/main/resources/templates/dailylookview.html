@@ -1,0 +1,42 @@
+<!-- templates/dailylookview.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>데일리룩 보기</title>
+  <link rel="stylesheet" th:href="@{/css/dailylookview.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="dailylook-detail-container">
+  <img th:src="@{${dailyLook.imageUrl}}" alt="데일리룩 이미지">
+
+  <p><strong>작성자:</strong> <span th:text="${dailyLook.user.nickname}"></span></p>
+  <p><strong>코멘트:</strong> <span th:text="${dailyLook.comment}"></span></p>
+  <p><strong>작성일:</strong> <span th:text="${dailyLook.createdAt}"></span></p>
+
+  <form th:action="@{'/dailylooks/view/' + ${dailyLook.id} + '/like'}" method="post">
+  <button type="submit" th:text="${hasLiked} ? '💔 좋아요 취소' : '❤️ 좋아요'"></button>
+    <span th:text="${likeCount}">0</span>
+  </form>
+
+
+  <!-- 댓글 목록 -->
+  <div class="comment-section">
+    <h3>댓글</h3>
+
+    <div th:each="comment : ${comments}">
+      <p><strong th:text="${comment.nickname}">닉네임</strong>:
+        <span th:text="${comment.content}">내용</span>
+        <small th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm')}">시간</small>
+      </p>
+    </div>
+
+    <form th:action="@{'/dailylooks/view/' + ${dailyLook.id} + '/comment'}" method="post">
+    <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
+      <button type="submit">댓글 작성</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

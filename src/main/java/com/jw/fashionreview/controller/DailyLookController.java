@@ -1,8 +1,11 @@
 package com.jw.fashionreview.controller;
 
+import com.jw.fashionreview.domain.Comment;
 import com.jw.fashionreview.domain.DailyLook;
 import com.jw.fashionreview.domain.User;
 import com.jw.fashionreview.dto.DayCell;
+import com.jw.fashionreview.repository.CommentRepository;
+import com.jw.fashionreview.service.DailyLookLikeService;
 import com.jw.fashionreview.service.DailyLookService;
 import com.jw.fashionreview.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +30,8 @@ public class DailyLookController {
 
     private final DailyLookService dailyLookService;
     private final UserService userService;
+    private final CommentRepository commentRepository;
+    private final DailyLookLikeService dailyLookLikeService;
 
     @PostMapping("/api")
     public DailyLook create(@RequestBody DailyLook dailyLook) {
@@ -160,25 +167,64 @@ public class DailyLookController {
         return "redirect:/my";
     }
 
-    @GetMapping("/dailylooks")
+    @GetMapping("/dailylooks") // ✅ 전체 목록은 복수형 경로로
     public String getAllPublicDailyLooks(Model model) {
         List<DailyLook> publicLooks = dailyLookService.getPublicDailyLooks();
         model.addAttribute("dailyLooks", publicLooks);
         return "dailylook"; // dailylook.html
     }
 
-    @GetMapping("/dailylook/{id}")
-    public String viewPublicDailyLook(@PathVariable Long id, Model model) {
-        DailyLook dailyLook = dailyLookService.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyLook not found"));
+    @GetMapping("/dailylooks/view/{id}") // ✅ 상세보기는 /view 하위 경로로 이동
+    public String viewPublicDailyLook(@PathVariable Long id, Model model, Principal principal) {
+        DailyLook dailyLook = dailyLookService.findById(id).orElseThrow();
+        List<Comment> comments = commentRepository.findByDailyLookIdOrderByCreatedDateAsc(id);
+
+        long likeCount = dailyLookLikeService.getLikeCount(dailyLook);
+        boolean hasLiked = false;
+
+        if (principal != null) {
+            User user = userService.findByUsername(principal.getName()).orElseThrow();
+            hasLiked = dailyLookLikeService.hasLiked(dailyLook, user);
+        }
+
         model.addAttribute("dailyLook", dailyLook);
+        model.addAttribute("comments", comments);
+        model.addAttribute("likeCount", likeCount);
+        model.addAttribute("hasLiked", hasLiked);
+
         return "dailylookview"; // dailylookview.html
     }
 
+    @PostMapping("/dailylooks/view/{id}/comment") // ✅ 댓글도 상세 경로에 맞게
+    public String postComment(@PathVariable Long id, @RequestParam String content, Principal principal) {
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        DailyLook dailyLook = dailyLookService.findById(id)
+                .orElseThrow(() -> new RuntimeException("DailyLook not found"));
 
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setWriter(user.getUsername());
+        comment.setNickname(user.getNickname());
+        comment.setDailyLook(dailyLook);
+        comment.setCreatedDate(LocalDateTime.now());
 
+        commentRepository.save(comment);
 
+        return "redirect:/dailylooks/view/" + id;
+    }
+
+    @PostMapping("/dailylooks/view/{id}/like") // ✅ 좋아요도 상세 경로에 맞게
+    public String toggleLike(@PathVariable Long id, Principal principal) {
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        DailyLook dailyLook = dailyLookService.findById(id)
+                .orElseThrow(() -> new RuntimeException("DailyLook not found"));
+
+        dailyLookLikeService.toggleLike(dailyLook, user);
+        return "redirect:/dailylooks/view/" + id;
+    }
 
 
 }

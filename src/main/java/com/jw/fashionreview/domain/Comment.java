@@ -42,4 +42,8 @@ public class Comment {
 
     private String nickname;   // ✨ 닉네임 추가
 
+    @ManyToOne
+    @JoinColumn(name = "dailylook_id")
+    private DailyLook dailyLook;
+
 }
