@@ -46,17 +46,22 @@
         <div id="comments" class="section" style="display: none;">
             <h2>💬 내가 쓴 댓글</h2>
             <div class="comment-list">
-                <a th:href="@{/view(id=${comment.board.id})}"
-                   th:each="comment : ${myComments}"
-                   class="comment-card-link">
-                    <div class="comment-card">
-                        <div class="post-title" th:text="${comment.board.subject}">게시글 제목</div>
+                <div th:each="comment : ${myComments}">
+                    <a th:if="${comment.board != null}"
+                       th:href="@{'/view?id=' + ${comment.board.id}}"
+                       class="comment-card-link">
+                        <div class="comment-card">
+                            <div class="post-title" th:text="${comment.board.subject}">게시글 제목</div>
+                            <p class="comment-content" th:text="${comment.content}">댓글 내용</p>
+                        </div>
+                    </a>
+                    <div th:if="${comment.board == null}" class="comment-card">
+                        <div class="post-title">[삭제된 게시글]</div>
                         <p class="comment-content" th:text="${comment.content}">댓글 내용</p>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
-
 
         <!-- 회원정보 변경 -->
         <div id="profile" class="section" style="display: none;">

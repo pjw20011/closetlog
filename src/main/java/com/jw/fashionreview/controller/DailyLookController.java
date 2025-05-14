@@ -68,23 +68,23 @@ public class DailyLookController {
     public String createDailyLook(
             @RequestParam("imageFile") MultipartFile imageFile,
             @RequestParam("comment") String comment,
-            @RequestParam("isPublic") boolean isPublic
+            @RequestParam("isPublic") boolean isPublic,
+            Principal principal // ✅ 현재 로그인 사용자 정보
     ) throws IOException {
 
         String fileName = imageFile.getOriginalFilename();
         String uploadDir = "C:/Users/kisyj/Desktop/fashionReview/fashionreview/src/main/resources/static/dailylook/";
         File destination = new File(uploadDir + fileName);
-
-        // 파일 복사
         imageFile.transferTo(destination);
 
         String imageUrl = "/dailylook/" + fileName;
 
-        User dummyUser = userService.findById(1L)
+        // ✅ principal에서 사용자 이름으로 조회
+        User loginUser = userService.findByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         DailyLook dailyLook = DailyLook.builder()
-                .user(dummyUser)
+                .user(loginUser) // ✅ 현재 로그인 사용자로 저장
                 .imageUrl(imageUrl)
                 .comment(comment)
                 .isPublic(isPublic)
@@ -92,17 +92,24 @@ public class DailyLookController {
                 .build();
 
         dailyLookService.createDailyLook(dailyLook);
-
         return "redirect:/my";
     }
 
+
     @GetMapping("/my")
-    public String getMyDailyLooks(Model model) {
-        Long userId = 1L;  // TODO: 로그인 사용자로 교체
-        List<DailyLook> dailyLooks = dailyLookService.getMyDailyLooks(userId);
+    public String getMyDailyLooks(Model model, Principal principal) {
+        // 로그인한 사용자 ID 조회
+        User user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<DailyLook> dailyLooks = dailyLookService.getMyDailyLooks(user.getId());
 
         Map<LocalDate, DailyLook> lookMap = dailyLooks.stream()
-                .collect(Collectors.toMap(DailyLook::getCreatedAt, d -> d));
+                .collect(Collectors.toMap(
+                        DailyLook::getCreatedAt,
+                        d -> d,
+                        (d1, d2) -> d1 // 충돌 시 첫 번째 값 유지
+                ));
 
         LocalDate today = LocalDate.now();
         LocalDate firstDay = today.withDayOfMonth(1);
@@ -111,9 +118,9 @@ public class DailyLookController {
         List<List<DayCell>> calendar = new ArrayList<>();
         List<DayCell> week = new ArrayList<>();
 
-        int dayOfWeekValue = firstDay.getDayOfWeek().getValue() % 7;  // 일=0, 월=1, ...
+        int dayOfWeekValue = firstDay.getDayOfWeek().getValue() % 7;
         for (int i = 0; i < dayOfWeekValue; i++) {
-            week.add(null);  // 앞쪽 빈칸
+            week.add(null);
         }
 
         for (LocalDate date = firstDay; !date.isAfter(lastDay); date = date.plusDays(1)) {
@@ -124,9 +131,10 @@ public class DailyLookController {
                 week.clear();
             }
         }
+
         if (!week.isEmpty()) {
             while (week.size() < 7) {
-                week.add(null);  // 뒤쪽 빈칸
+                week.add(null);
             }
             calendar.add(week);
         }
@@ -134,6 +142,7 @@ public class DailyLookController {
         model.addAttribute("calendar", calendar);
         return "my_dailylooks";
     }
+
 
     @GetMapping("/my/dailylook/{id}")
     public String viewDailyLook(@PathVariable Long id, Model model) {

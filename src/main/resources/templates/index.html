@@ -24,7 +24,13 @@
         <a href="/plusclothes" class="add-button">＋</a>
       </div>
       <div class="closet-items">
-        <div class="closet-preview-card" th:each="clothes : ${clothesList}">
+        <!-- 옷이 없는 경우 메시지 출력 -->
+        <p th:if="${#lists.isEmpty(clothesList)}" style="text-align: center; margin-top: 1rem;">
+          아직 등록된 옷이 없습니다. 옷장을 채워주세요! 👕
+        </p>
+
+        <!-- 옷이 있는 경우만 반복 출력 -->
+        <div class="closet-preview-card" th:each="clothes : ${clothesList}" th:if="${!#lists.isEmpty(clothesList)}">
           <a th:href="@{'/viewclothes/' + ${clothes.id}}">
             <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
           </a>

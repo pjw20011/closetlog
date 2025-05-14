@@ -22,7 +22,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/upload","/clothes")
                         .disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login","/send-code","verify-code","/css/**", "/uploads/**").permitAll()
+                        .requestMatchers("/","/register", "/login","/send-code","verify-code","/css/**", "/uploads/**").permitAll()
                         .anyRequest().authenticated() // 나머지는 로그인 필요
                 )
                 .userDetailsService(customUserDetailsService)  // ✅ 연결
