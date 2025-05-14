@@ -10,6 +10,15 @@
 <div class="container">
   <div th:replace="header :: header"></div>
 
+  <section class="banner-slider">
+    <div class="slides">
+      <img src="/images/home1.jpg" alt="슬라이드 1" class="slide active">
+      <img src="/images/home2.jpg" alt="슬라이드 2" class="slide">
+      <img src="/images/home3.jpg" alt="슬라이드 3" class="slide">
+      <img src="/images/home4.jpg" alt="슬라이드 4" class="slide">
+    </div>
+  </section>
+
   <main class="main-layout">
     <section class="calendar-section">
       <h2>📅 오늘의 코디</h2>
@@ -39,5 +48,24 @@
     </section>
   </main>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    let current = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+    }
+
+    setInterval(() => {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }, 5000);
+  });
+</script>
+
 </body>
 </html>
