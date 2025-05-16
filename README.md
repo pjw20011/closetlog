@@ -20,7 +20,8 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 | 댓글, 대댓글 기능    | 작성/수정/삭제, 권한 체크 및 리다이렉션 처리          | ✅ 완료 |
 | 마이페이지 기능      | 내가 쓴글, 댓글 확인 / 회원정보 변경(닉네임, 비밀번호)   | ✅ 완료 |
 | 옷장 기능         | 옷 등록 및 관리                           | ✅ 완료 |
-| 데일리 룩 캘린더(기록) | 날짜 별로 캘린더에 옷 사진이나 제품 등록             | 🛠 진행 중 |
+| 데일리 룩 캘린더(기록) | 날짜 별로 캘린더에 옷 사진이나 제품 등록             | ✅ 완료 |
+| 전체 UI 개선      | UI 다듬기                              | 🛠 진행 중 |
 
 ---
 
@@ -49,7 +50,7 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 
 ## 💡 향후 계획
 
-- 데일리 룩 캘린더 기능 완성
+- UI 개선
 - AWS 배포
 
 ## 🔗 관련 링크
@@ -58,3 +59,4 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 - 📌 [2편 - 게시판/댓글 기능 구현](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-2-%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%B0%8F-%EB%8C%93%EA%B8%80-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84)
 - 📌 [3편 - 마이페이지, 닉네임 변경, 대댓글, UI 개선](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-3-%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%8B%AD%EB%84%A4%EC%9E%84-%EB%B3%80%EA%B2%BD-%EB%8C%80%EB%8C%93%EA%BE%B8-UI-%EA%B0%9C%EC%84%A0)
 - 📌 [4편 - 옷장 기반 코디 추천](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-4-%EC%98%B7%EC%9E%A5-%EA%B8%B0%EB%B0%98-%EC%BD%94%EB%94%94-%EC%B6%94%EC%B2%9C)
+- 📌 [5편 - 데일리룩 기록 기능](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-5-%EB%8D%B0%EC%9D%BC%EB%A6%AC%EB%A3%A9-%EA%B8%B0%EB%A1%9D-%EA%B8%B0%EB%8A%A5)
