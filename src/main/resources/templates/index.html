@@ -10,35 +10,30 @@
 <div class="container">
   <div th:replace="header :: header"></div>
 
+  <!-- 🔽 슬라이드 배너 -->
   <section class="banner-slider">
     <div class="slides">
-      <img src="/images/home1.jpg" alt="슬라이드 1" class="slide active">
-      <img src="/images/home2.jpg" alt="슬라이드 2" class="slide">
-      <img src="/images/home3.jpg" alt="슬라이드 3" class="slide">
-      <img src="/images/home4.jpg" alt="슬라이드 4" class="slide">
+      <div class="slide"><img src="/images/home1.jpg" alt="슬라이드 1"></div>
+      <div class="slide"><img src="/images/home2.jpg" alt="슬라이드 2"></div>
+      <div class="slide"><img src="/images/home3.jpg" alt="슬라이드 3"></div>
+      <div class="slide"><img src="/images/home4.jpg" alt="슬라이드 4"></div>
     </div>
   </section>
 
   <main class="main-layout">
     <section class="calendar-section">
       <h2>📅 오늘의 코디</h2>
-      <!-- 추후 JavaScript 캘린더 또는 타임라인 삽입 -->
     </section>
 
     <section class="closet-section">
       <div class="closet-header">
-        <h2>
-          <a href="/mycloset" class="link-text">👔 나의 옷장</a>
-        </h2>
+        <h2><a href="/mycloset" class="link-text">👔 나의 옷장</a></h2>
         <a href="/plusclothes" class="add-button">＋</a>
       </div>
       <div class="closet-items">
-        <!-- 옷이 없는 경우 메시지 출력 -->
         <p th:if="${#lists.isEmpty(clothesList)}" style="text-align: center; margin-top: 1rem;">
           아직 등록된 옷이 없습니다. 옷장을 채워주세요! 👕
         </p>
-
-        <!-- 옷이 있는 경우만 반복 출력 -->
         <div class="closet-preview-card" th:each="clothes : ${clothesList}" th:if="${!#lists.isEmpty(clothesList)}">
           <a th:href="@{'/viewclothes/' + ${clothes.id}}">
             <img th:src="@{${clothes.imagePath}}" alt="옷 이미지">
@@ -49,21 +44,24 @@
   </main>
 </div>
 
+<!-- 🔽 슬라이드 스크립트 -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    let current = 0;
+    const slideContainer = document.querySelector(".slides");
     const slides = document.querySelectorAll(".slide");
+    let current = 0;
 
-    function showSlide(index) {
-      slides.forEach((slide, i) => {
-        slide.classList.toggle("active", i === index);
-      });
+    function moveSlide(index) {
+      const offset = -index * 100;
+      slideContainer.style.transform = `translateX(${offset}%)`;
     }
+
+    moveSlide(current); // 초기 위치 이동
 
     setInterval(() => {
       current = (current + 1) % slides.length;
-      showSlide(current);
-    }, 5000);
+      moveSlide(current);
+    }, 5000); // 5초 간격
   });
 </script>
 
