@@ -13,10 +13,10 @@
   <!-- 🔽 슬라이드 배너 -->
   <section class="banner-slider">
     <div class="slides">
-      <div class="slide"><img src="/images/home1.jpg" alt="슬라이드 1"></div>
-      <div class="slide"><img src="/images/home2.jpg" alt="슬라이드 2"></div>
-      <div class="slide"><img src="/images/home3.jpg" alt="슬라이드 3"></div>
-      <div class="slide"><img src="/images/home4.jpg" alt="슬라이드 4"></div>
+      <div class="slide"><img src="/images/home1.jpg" alt="슬라이드 1" loading="eager"></div>
+      <div class="slide"><img src="/images/home2.jpg" alt="슬라이드 2" loading="eager"></div>
+      <div class="slide"><img src="/images/home3.jpg" alt="슬라이드 3" loading="eager"></div>
+      <div class="slide"><img src="/images/home4.jpg" alt="슬라이드 4" loading="eager"></div>
     </div>
   </section>
 
@@ -56,12 +56,13 @@
       slideContainer.style.transform = `translateX(${offset}%)`;
     }
 
-    moveSlide(current); // 초기 위치 이동
+    // 🔽 한 프레임 뒤에 초기 위치 적용
+    setTimeout(() => moveSlide(current), 10);
 
     setInterval(() => {
       current = (current + 1) % slides.length;
       moveSlide(current);
-    }, 5000); // 5초 간격
+    }, 5000);
   });
 </script>
 
