@@ -46,25 +46,23 @@
 
 <!-- 🔽 슬라이드 스크립트 -->
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const slideContainer = document.querySelector(".slides");
+    document.addEventListener("DOMContentLoaded", () => {
     const slides = document.querySelectorAll(".slide");
     let current = 0;
 
-    function moveSlide(index) {
-      const offset = -index * 100;
-      slideContainer.style.transform = `translateX(${offset}%)`;
-    }
-
-    // 🔽 한 프레임 뒤에 초기 위치 적용
-    setTimeout(() => moveSlide(current), 10);
+    function showSlide(index) {
+    slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === index);
+  });
+  }
 
     setInterval(() => {
-      current = (current + 1) % slides.length;
-      moveSlide(current);
-    }, 5000);
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }, 5000);
   });
 </script>
+
 
 </body>
 </html>
