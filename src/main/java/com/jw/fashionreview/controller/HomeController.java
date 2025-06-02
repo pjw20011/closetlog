@@ -31,7 +31,6 @@ public class HomeController {
             clothesList = clothesService.findByUserId(user.getId());
         }
 
-
         model.addAttribute("clothesList", clothesList.subList(0, Math.min(clothesList.size(), 6)));
         return "index";
     }
