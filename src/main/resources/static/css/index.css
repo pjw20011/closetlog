@@ -194,3 +194,11 @@ body {
     border-radius: 12px;
 }
 
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: #111111; /* 원하는 기본 색상 */
+}

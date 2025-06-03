@@ -97,23 +97,28 @@ public class DailyLookController {
 
 
     @GetMapping("/my")
-    public String getMyDailyLooks(Model model, Principal principal) {
-        // 로그인한 사용자 ID 조회
+    public String getMyDailyLooks(@RequestParam(required = false) Integer year,
+                                  @RequestParam(required = false) Integer month,
+                                  Model model, Principal principal) {
+
+        // 현재 날짜 기준으로 기본 설정
+        LocalDate today = LocalDate.now();
+        int targetYear = (year != null) ? year : today.getYear();
+        int targetMonth = (month != null) ? month : today.getMonthValue();
+
+        LocalDate firstDay = LocalDate.of(targetYear, targetMonth, 1);
+        LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
+
         User user = userService.findByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         List<DailyLook> dailyLooks = dailyLookService.getMyDailyLooks(user.getId());
 
         Map<LocalDate, DailyLook> lookMap = dailyLooks.stream()
                 .collect(Collectors.toMap(
                         DailyLook::getCreatedAt,
                         d -> d,
-                        (d1, d2) -> d1 // 충돌 시 첫 번째 값 유지
+                        (d1, d2) -> d1
                 ));
-
-        LocalDate today = LocalDate.now();
-        LocalDate firstDay = today.withDayOfMonth(1);
-        LocalDate lastDay = today.withDayOfMonth(today.lengthOfMonth());
 
         List<List<DayCell>> calendar = new ArrayList<>();
         List<DayCell> week = new ArrayList<>();
@@ -139,9 +144,21 @@ public class DailyLookController {
             calendar.add(week);
         }
 
+        // 이전/다음 달 계산
+        LocalDate prevMonth = firstDay.minusMonths(1);
+        LocalDate nextMonth = firstDay.plusMonths(1);
+
         model.addAttribute("calendar", calendar);
+        model.addAttribute("currentYear", targetYear);
+        model.addAttribute("currentMonth", targetMonth);
+        model.addAttribute("prevYear", prevMonth.getYear());
+        model.addAttribute("prevMonth", prevMonth.getMonthValue());
+        model.addAttribute("nextYear", nextMonth.getYear());
+        model.addAttribute("nextMonth", nextMonth.getMonthValue());
+
         return "my_dailylooks";
     }
+
 
 
     @GetMapping("/my/dailylook/{id}")

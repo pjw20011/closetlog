@@ -65,3 +65,16 @@
 .register-btn:hover {
     background-color: #4a4a4a;
 }
+
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    color: #444;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    text-decoration: underline;
+}

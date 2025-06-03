@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>내 데일리룩 </title>
+  <title>내 데일리룩</title>
   <link rel="stylesheet" th:href="@{/css/my_dailylooks.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
 <div th:replace="header :: header"></div>
+
+<!-- 달력 상단 영역 -->
 <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px;">
-  <h1 style="margin: 0;">내 데일리룩</h1>
+  <div>
+    <a th:href="@{|/my?year=${prevYear}&month=${prevMonth}|}" class="nav-btn">〈 이전달</a>
+    <span style="font-size: 20px; font-weight: bold; margin: 0 15px;">
+      [[${currentYear}]]년 [[${currentMonth}]]월
+    </span>
+    <a th:href="@{|/my?year=${nextYear}&month=${nextMonth}|}" class="nav-btn">다음달 〉</a>
+  </div>
   <a href="/form" class="register-btn">오늘의 룩 등록하기</a>
 </div>
 
+<!-- 달력 테이블 -->
 <table class="calendar">
   <thead>
   <tr>
