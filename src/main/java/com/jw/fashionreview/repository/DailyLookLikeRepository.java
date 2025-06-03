@@ -11,4 +11,5 @@ public interface DailyLookLikeRepository extends JpaRepository<DailyLookLike, Lo
     Optional<DailyLookLike> findByDailyLookAndUser(DailyLook dailyLook, User user);
     long countByDailyLook(DailyLook dailyLook);
     void deleteByDailyLookAndUser(DailyLook dailyLook, User user);
+    void deleteByDailyLookId(Long dailyLookId);
 }

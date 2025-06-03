@@ -22,7 +22,10 @@
 
   <main class="main-layout">
     <section class="calendar-section">
-      <h2>📅 오늘의 코디</h2>
+      <h2> 📰 패션 블로그 </h2>
+      <div id="fashion-blog-list" class="fashion-blog-box">
+        <p>불러오는 중...</p>
+      </div>
     </section>
 
     <section class="closet-section">
@@ -61,6 +64,35 @@
     showSlide(current);
   }, 5000);
   });
+
+
+    fetch("/api/blog")
+            .then(res => res.json())
+            .then(data => {
+              const listBox = document.getElementById("fashion-blog-list");
+              listBox.innerHTML = "";
+
+              const items = data.items;
+
+              if (!items || items.length === 0) {
+                listBox.innerHTML = "<p>패션 블로그 글이 없습니다.</p>";
+                return;
+              }
+
+              const ul = document.createElement("ul");
+              items.forEach(item => {
+                const li = document.createElement("li");
+                const cleanTitle = item.title.replace(/<[^>]*>/g, "");
+                li.innerHTML = `<a href="${item.link}" target="_blank">${cleanTitle}</a>`;
+                ul.appendChild(li);
+              });
+              listBox.appendChild(ul);
+            })
+            .catch(() => {
+              document.getElementById("fashion-blog-list").innerHTML =
+                      "<p>불러오는 데 실패했습니다.</p>";
+            });
+
 </script>
 
 

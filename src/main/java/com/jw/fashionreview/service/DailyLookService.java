@@ -1,7 +1,9 @@
 package com.jw.fashionreview.service;
 
 import com.jw.fashionreview.domain.DailyLook;
+import com.jw.fashionreview.repository.DailyLookLikeRepository;
 import com.jw.fashionreview.repository.DailyLookRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class DailyLookService {
 
 
     private final DailyLookRepository dailyLookRepository;
+    private final DailyLookLikeRepository dailyLookLikeRepository;
 
     public DailyLook createDailyLook(DailyLook dailyLook) {
         dailyLook.setCreatedAt(LocalDate.now());
@@ -29,7 +32,12 @@ public class DailyLookService {
         return dailyLookRepository.findByIsPublicTrue();
     }
 
+    @Transactional
     public void deleteDailyLook(Long id) {
+        // ✅ 먼저 좋아요부터 삭제
+        dailyLookLikeRepository.deleteByDailyLookId(id);
+
+        // ✅ 그다음 데일리룩 삭제
         dailyLookRepository.deleteById(id);
     }
 
