@@ -57,6 +57,6 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 
 - 📌 [1편 - 회원가입/로그인 기능 구현](https://velog.io/@pjw200116/Spring-Boot%EB%A1%9C-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-%ED%8C%A8%EC%85%98-%EB%A6%AC%EB%B7%B0-%EA%B2%8C%EC%8B%9C%ED%8C%90-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-1)
 - 📌 [2편 - 게시판/댓글 기능 구현](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-2-%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%B0%8F-%EB%8C%93%EA%B8%80-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84)
-- 📌 [3편 - 마이페이지, 닉네임 변경, 대댓글, UI 개선](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-3-%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%8B%AD%EB%84%A4%EC%9E%84-%EB%B3%80%EA%B2%BD-%EB%8C%80%EB%8C%93%EA%BE%B8-UI-%EA%B0%9C%EC%84%A0)
+- 📌 [3편 - 마이페이지, 닉네임 변경, 대댓글, UI 개선](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-3-%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%8B%89%EB%84%A4%EC%9E%84-%EB%B3%80%EA%B2%BD-%EB%8C%80%EB%8C%93%EA%B8%80-UI-%EA%B0%9C%EC%84%A0)
 - 📌 [4편 - 옷장 기반 코디 추천](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-4-%EC%98%B7%EC%9E%A5-%EA%B8%B0%EB%B0%98-%EC%BD%94%EB%94%94-%EC%B6%94%EC%B2%9C)
 - 📌 [5편 - 데일리룩 기록 기능](https://velog.io/@pjw200116/ClosetLog-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-5-%EB%8D%B0%EC%9D%BC%EB%A6%AC%EB%A3%A9-%EA%B8%B0%EB%A1%9D-%EA%B8%B0%EB%8A%A5)
