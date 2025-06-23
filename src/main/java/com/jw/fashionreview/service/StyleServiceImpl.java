@@ -18,8 +18,8 @@ public class StyleServiceImpl implements StyleService {
 
     private Map<String, List<String>> getColorMatchMap() {
         Map<String, List<String>> map = new HashMap<>();
-        map.put("화이트", Arrays.asList("진청", "연청", "베이지", "카키", "검정"));
-        map.put("블랙", Arrays.asList("베이지", "회색", "레드", "화이트"));
+        map.put("화이트", Arrays.asList("진청", "연청", "베이지", "카키", "검정","그레이"));
+        map.put("블랙", Arrays.asList("베이지", "회색", "레드", "화이트","카키","그레이"));
         map.put("네이비", Arrays.asList("화이트", "베이지", "연청", "카키", "검정"));
         map.put("그린", Arrays.asList("베이지", "연청", "화이트", "회색", "검정"));
         map.put("레드", Arrays.asList("검정", "화이트", "회색", "네이비"));

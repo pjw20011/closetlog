@@ -8,6 +8,12 @@ Closetlog는 사용자 맞춤형 옷장 관리와 패션 리뷰를 제공하는 
 
 ---
 
+## 📑 설명서
+- 📑 [설명서 보기](https://drive.google.com/file/d/1IQosqyvdAoRlGDbxSiUMmpT1ZDdgI4S0/view?usp=drive_link)
+
+---
+
+
 ## 📌 주요 기능
 
 | 기능            | 설명                                  | 상태    |
