@@ -2,16 +2,10 @@ package com.jw.fashionreview.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.Entity;
-import lombok.Value;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpHeaders;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,16 +20,18 @@ public class ChatGptService {
     @Value("${openai.api.url}")
     private String apiUrl;
 
-    private static final Object Mapper = new ObjectMapper();   // JSON 처리용 Jackson 객체
+    private static final ObjectMapper mapper = new ObjectMapper();   // JSON 처리용 Jackson 객체
 
     // 프롬프트 생성 메소드
     public String getCoordiRecommendation(String situation, List<String> clothes) throws IOException {
         String prompt = buildPrompt(situation, clothes); // 프롬프트 생성
 
         // HTTP Post 요청
-        HttpPost post = new HttpPost(apiUrl);
-        post.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey); // 인증
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey); // API 키 설정
+
 
         Map<String, Object> message = Map.of(
                 "role", "user", // 사용자 역할
@@ -46,20 +42,14 @@ public class ChatGptService {
                 "messages", List.of(message) // 대화형태로 전달
         );
 
-        // JSON으로 변환
-        StringEntity entity = new StringEntity(Mapper.writeValueAsString(body), ContentType.APPLICATION_JSON);
-        post.setEntity(entity);
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        // HTTP 요청 실행
-        try(CloseableHttpClient client = HttpClients.createDefault();
-             var response = client.execute(post)) {
+        // 4. 요청 보내고 응답 받기
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, requestEntity, String.class);
 
-            String json = EntityUtils.toString(response.getEntity()); // JSON 응답 처리
-            ObjectMapper mapper;
-            JsonNode root = mapper.readTree(json); // 응답 JSON 파싱
-            return root.at("/choices/0/message/content").asText(); // 결과 텍스트만 추출
-
-        }
+        // 5. 응답 JSON 파싱
+        JsonNode root = mapper.readTree(response.getBody());
+        return root.at("/choices/0/message/content").asText(); // 결과만 추출
     }
 
     // Gpt에게 전달할 프롬프트 생성 메소드

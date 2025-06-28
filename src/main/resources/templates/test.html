@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>코디 추천 테스트</title>
+</head>
+<body>
+<h1>GPT 코디 추천</h1>
+
+<label>상황:</label><br>
+<input type="text" id="situation" placeholder="예: 봄 데이트"><br><br>
+
+<label>옷 목록 (쉼표로 구분):</label><br>
+<input type="text" id="clothes" placeholder="예: 청바지, 흰티, 운동화"><br><br>
+
+<button onclick="send()">추천 요청</button>
+
+<h2>추천 결과</h2>
+<pre id="result">결과가 여기에 표시됩니다.</pre>
+
+<script>
+    async function send() {
+        const situation = document.getElementById("situation").value;
+        const clothes = document.getElementById("clothes").value;
+
+        const formData = new URLSearchParams();
+        formData.append("situation", situation);
+        formData.append("clothes", clothes);
+
+        const response = await fetch("/api/recommend", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+        });
+
+        const text = await response.text();
+        document.getElementById("result").innerText = text;
+    }
+</script>
+</body>
+</html>
