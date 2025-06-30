@@ -13,7 +13,6 @@ import java.util.List;
 @Controller
 public class RecommendController {
 
-
     private final ChatGptService chatGptService;
 
     @GetMapping("/test")
