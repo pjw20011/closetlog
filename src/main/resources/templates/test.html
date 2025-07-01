@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>코디 추천 테스트</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        input, button { font-size: 1rem; margin-bottom: 10px; }
+        #result { white-space: pre-line; background: #f4f4f4; padding: 15px; border-radius: 6px; }
+    </style>
 </head>
 <body>
 <h1>GPT 코디 추천</h1>
 
 <label>상황:</label><br>
-<input type="text" id="situation" placeholder="예: 봄 데이트"><br><br>
+<input type="text" id="situation" placeholder="예: 봄 데이트"><br>
 
 <label>옷 목록 (쉼표로 구분):</label><br>
-<input type="text" id="clothes" placeholder="예: 청바지, 흰티, 운동화"><br><br>
+<input type="text" id="clothes" placeholder="예: 청바지, 흰티, 운동화"><br>
 
 <button onclick="send()">추천 요청</button>
 
 <h2>추천 결과</h2>
-<pre id="result">결과가 여기에 표시됩니다.</pre>
+<div id="result">결과가 여기에 표시됩니다.</div>
 
 <script>
     async function send() {
@@ -36,7 +41,10 @@
         });
 
         const text = await response.text();
-        document.getElementById("result").innerText = text;
+
+        // 줄바꿈 문자 \n을 실제 <br> 로 변환
+        const formatted = text.replace(/\n/g, "<br>");
+        document.getElementById("result").innerHTML = formatted;
     }
 </script>
 </body>
